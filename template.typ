@@ -33,8 +33,8 @@
     // TODO: put receiver bos in the right position for "standard" window letter
     // TODO: support different presets for various envelopes
     receiver_position: (
-        left: 10cm,
-        top: 5cm,
+        left: 12cm,
+        top: 4.7cm,
     ),
     content_start: 10cm,
     // NOTE: all the other spacings are independent of the margins
@@ -81,7 +81,6 @@ set page(
         dy: receiver_position.top - margin.top,
         rect(
             height: 3cm,
-            width: 7cm,
             stroke: if debug {red} else {none},
             {
                 receiver.join(linebreak())

@@ -1,11 +1,11 @@
 #import "template.typ": swissletter
 #show: swissletter.with(
-    debug: true,
+    debug: false,
 )
 #lorem(40)
 
 ```rust
-fn(&mut i32: x) -> i32 {
+pub fn f(x: &mut i32) -> i32 {
     3
 }
 ```
