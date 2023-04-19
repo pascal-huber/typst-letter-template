@@ -1,6 +1,25 @@
 # Typst Letter Template
 
 Template for DIN 5008 and (Swiss) C5 Letter with window.
+
+# Example document
+
+``` typst
+template.typ": letter
+#let letter = letter.with(
+    debug: true,
+    format: "C5-WINDOW-RIGHT",
+)
+#set page(
+    header: {
+        set text(size: .8em)
+        smallcaps("Overriding the header")
+    }
+)
+#show: letter
+#lorem(1000)
+
+```
  
 # Parameters
 
@@ -45,10 +64,13 @@ Template for DIN 5008 and (Swiss) C5 Letter with window.
 
 Independent fields of the `format`
     
-| Parameter   | Supportedl Types/Values                                                            |
-|-------------|------------------------------------------------------------------------------------|
-| itemspacing | Length                                                                             |
-| margin      | Dict (see [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)) |
+| Parameter         | Supportedl Types/Values                                                            |
+|-------------------|------------------------------------------------------------------------------------|
+| title_spacing     | Length                                                                             |
+| opening_spacing   | Length                                                                             |
+| closing_spacing   | Length                                                                             |
+| signature_spacing | Length                                                                             |
+| margin            | Dict (see [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)) |
 
 
 # Resources
@@ -60,8 +82,11 @@ Independent fields of the `format`
 
 
 # TODO
- - Add C5 Layout with window on the left side
- - Use datetime type (and today function) as soon as it exists
+ - [ ] Add C5 Layout with window on the left side
+ - [ ] Use datetime type (and today function) as soon as it exists
    [PR](https://github.com/typst/typst/pull/435),
    [discussion](https://github.com/typst/typst/issues/303),
    [issue](https://github.com/typst/typst/issues/204)
+ - [ ] Find out how scrlttr2 in latex handles spacing (e.g. signature_spacing)
+ - https://github.com/typst/typst/issues/763
+ - [ ] Handle `page` overrides (probably requires [this](https://github.com/typst/typst/issues/763))
