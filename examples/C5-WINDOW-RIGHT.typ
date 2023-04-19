@@ -1,6 +1,6 @@
-#import "template.typ": swissletter
-#show: swissletter.with(
-    debug: false,
+#import "../template.typ": letter
+#show: letter.with(
+    format: "C5-WINDOW-RIGHT",
 )
 #lorem(40)
 

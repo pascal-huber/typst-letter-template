@@ -1,4 +1,6 @@
 *
+!examples/
+!examples/*
 !.gitignore
 !README.md
 !example.pdf
