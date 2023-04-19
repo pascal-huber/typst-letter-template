@@ -5,19 +5,11 @@ Template for DIN 5008 and (Swiss) C5 Letter with window.
 # Example document
 
 ``` typst
-template.typ": letter
-#let letter = letter.with(
-    debug: true,
-    format: "C5-WINDOW-RIGHT",
+#import "./template.typ": letter
+#show: letter.with(
+    format: "DIN-5008-A",
 )
-#set page(
-    header: {
-        set text(size: .8em)
-        smallcaps("Overriding the header")
-    }
-)
-#show: letter
-#lorem(1000)
+#lorem(40)
 
 ```
  
