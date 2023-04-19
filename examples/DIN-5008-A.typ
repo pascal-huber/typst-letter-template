@@ -1,5 +1,6 @@
 #import "../template.typ": letter
 #show: letter.with(
+    debug: true,
     format: "DIN-5008-A",
 )
 #lorem(40)
