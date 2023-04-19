@@ -1,5 +1,6 @@
 #import "../template.typ": letter
 #show: letter.with(
+    debug: true,
     format: "C5-WINDOW-RIGHT",
 )
 #lorem(40)

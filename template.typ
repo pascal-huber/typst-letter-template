@@ -1,5 +1,5 @@
 #let letter(
-    debug: true,
+    debug: false,
 
     sender: (
         "Sender Firma AG",
