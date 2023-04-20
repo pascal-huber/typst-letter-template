@@ -13,12 +13,16 @@ Swiss C5 Letter.
    Whether or not to show the debug lines.
  - `_page` [Dict] (default=(:))  
    Overwrite page settings.
- - `format` [String] (default=none)
+ - `format` [String] (default=none)  
    Format of the letter. Must be one of "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT"
  - `margin` [Dict]  
    Margins of the document. [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)
- - `document_start_min` [Length]  
+ - `content_start_min` [Length]  
    Minimum space between top margin and beginning of the letter content.
+ - `content_spacing` [Length]  
+   Minimum spacing between sender/receiver and letter content.
+ - `justify_content` [Bool]  
+   Wheter or not to justify the content.
    
 ## Sender
 
@@ -50,6 +54,8 @@ Swiss C5 Letter.
 
 ## Date and Place Line
 
+ - `show_date_place` [Bool]  
+   Wheter or not to show the date/place
  - `letter_date_place_line` [Content]  
    Specify a custom line to go above the letter title instead of the following.
  - `letter_date` [Content]  
@@ -61,20 +67,30 @@ Swiss C5 Letter.
    
 ## Document Start
 
+ - `show_title` [Bool]  
+   Whether or not to show the title.
  - `title_spacing` [Length]  
    Spacing before the title.
  - `title` [Content]  
    Content of the title.
+ - `show_opening` [Bool]  
+   Whether or not to show the opening.
  - `opening_spacing` [Length]  
    Spacing before the letter opening.
  - `opening` [Content]  
    Content of the opening (e.g. "Dear Sir....").
+ - `body_spacing` [Lenght]  
+   Spacing before the body of the letter.
    
 ## Document End
+ - `show_closing` [Bool]  
+   Wheter or not to show the closing line.
  - `closing_spacing` [Length]  
    Spacing before the closing.
  - `closing` [Content]  
    Content of the closing (e.g. "kind regards").
+ - `show_signature` [Bool]  
+   Wheter or not to show the signature line.
  - `signature_spacing` [Length]  
    Spacing before the signature.
  - `signature` [Content]  

@@ -13,14 +13,14 @@
     letter_date: "20.04.2153",
     letter_place: "Weitfortistan",
     signature: "Hanspeter Müller",
-    return_to: "Typst Ltd · Sesamstrasse 15 · 1234 Berlin",
+    return_to: "Firma AG · Sesamstrasse 15 · 1234 Berlin",
     receiver: (
         "Peter Empfänger",
         "Bahnhofsstrasse 16",
         "1234 Nochvielweiterwegstadt",
     ),
     sender: {
-        image("typst-header.png", width: 100%, fit: "contain")
+        image("logo.png", width: 100%, fit: "contain")
         h(2mm)
         text("Hanspeter Müller")
         linebreak()

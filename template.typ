@@ -20,6 +20,9 @@
         left: 25mm,
         right: 20mm,
     ),
+    content_start_min: 90mm, // TODO: find a good value for content_start_min
+    content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all // TODO: add to README
+    justify_content: true,
 
     // Sender Field
     sender: none,
@@ -36,24 +39,27 @@
     receiver_position: none,
     receiver_width: none,
 
-    // Document start
-    content_start_min: 90mm, // TODO: find a good value for content_start_min
-
     // Date and place line before Title
-    letter_date_place_line: none, // TODO: add to README
+    show_date_place: true,
+    letter_date_place_line: none,
     letter_date: none,
     letter_place: none,
-    letter_date_place_align: none, // TODO: add to README
+    letter_date_place_align: none,
 
     // Document Start
+    show_title: true,
     title_spacing: 2mm,
     title: "Briefe mit Typst erstellen",
+    show_opening: true,
     opening_spacing: 2mm,
     opening: "Sehr geehrte Damen und Herren,",
+    body_spacing: 2mm,
 
     // Document End
+    show_closing: true,
     closing_spacing: 5mm,
     closing: "Freundliche Grüsse",
+    show_signature: true,
     signature_spacing: 8mm,
     signature: none,
 
@@ -61,8 +67,8 @@
     show_puncher_mark: none,
     show_fold_mark: none,
 
-    // The letter's content.
-    content
+    // The letter body.
+    body
 ) = {
 
 
@@ -298,12 +304,12 @@
             content_start_min - margin.top,
         ))
     })
-    v(8.46mm)
+    v(content_spacing)
 
     // content
     {
-        set par(justify: true)
-        {
+        set par(justify: justify_content)
+        if show_date_place {
             set align(letter_date_place_align)
             if letter_date_place_line == none {
                 if letter_place != none {
@@ -319,20 +325,27 @@
                 letter_date_place_line
             }
         }
-        v(title_spacing)
-        text(
-            weight: "bold",
-            size: 1.0em,
-            title
-        )
-        v(opening_spacing)
-        opening
-        linebreak()
-        linebreak()
-        content
-        v(closing_spacing)
-        closing
-        v(signature_spacing)
-        signature
+        if show_title {
+            v(title_spacing)
+            text(
+                weight: "bold",
+                size: 1.0em,
+                title
+            )
+        }
+        if show_opening {
+            v(opening_spacing)
+            opening
+        }
+        v(body_spacing)
+        body
+        if show_closing {
+            v(closing_spacing)
+            closing
+        }
+        if show_signature {
+            v(signature_spacing)
+            signature
+        }
     }
 }
