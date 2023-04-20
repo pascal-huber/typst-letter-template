@@ -1,6 +1,7 @@
 # Typst Letter Template
 
-Typst templates for DIN 5008 A/B and Swiss C5 Letter with window.
+A customizable Typst letter template with some presets for DIN 5008 A/B and
+Swiss C5 Letter.
 
 ![preview](./preview.png)
  
@@ -16,7 +17,7 @@ Typst templates for DIN 5008 A/B and Swiss C5 Letter with window.
    Format of the letter. Must be one of "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT"
  - `margin` [Dict]  
    Margins of the document. [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)
- - `document`_start_min [Length]  
+ - `document_start_min` [Length]  
    Minimum space between top margin and beginning of the letter content.
    
 ## Sender
