@@ -8,75 +8,75 @@ Typst templates for DIN 5008 A/B and Swiss C5 Letter with window.
 
 ## Document Settings
 
- - debug [Bool] (default=false)
+ - `debug` [Bool] (default=false)  
    Whether or not to show the debug lines.
- - _page [Dict] (default=(:))
+ - `_page` [Dict] (default=(:))  
    Overwrite page settings.
- - format [String] (default=none) [REQUIRED]
+ - `format` [String] (default=none) [REQUIRED]  
    Format of the letter. Must be one of "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT"
- - margin [Dict] 
+ - `margin` [Dict]  
    Margins of the document. [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)
- - document_start_min [Length] 
+ - `document`_start_min [Length]  
    Minimum space between top margin and beginning of the letter content.
    
 ## Sender
 
- - sender [Array, Content] (default: none)
+ - `sender` [Array, Content] (default: none)  
    Content or array of lines for the sender field. 
- - sender_position [Dict] (default: none)
+ - `sender_position` [Dict] (default: none)  
    Position of the sender field.
- - sender_width [Length]
+ - `sender_width` [Length]  
    Width of the sender field.
 
 ## Receiver
 
- - show_return_to [Bool]
+ - `show_return_to` [Bool]  
    Whether or not to show the return_to field.
- - return_to [Content]
+ - `return_to` [Content]  
    Content of the return_to field.
- - show_remark_zone [Bool]
+ - `show_remark_zone` [Bool]  
    Whether or not to show the remark_zone field.
- - remark_zone [Content]
+ - `remark_zone` [Content]  
    Content of the remark_zone field.
- - remark_zone_align [Align] (FORMAT_SPECIFIC)
+ - `remark_zone_align` [Align] (FORMAT_SPECIFIC)  
    Alignment of the remark_zone.
- - receiver [Content]
+ - `receiver` [Content]  
    Content of the receiver field.
- - receiver_position [Dict]
+ - `receiver_position` [Dict]  
    Position of the receiver fields (`top: [Length]`, `left: [Length]`) 
- - receiver_width [Length]
+ - `receiver_width` [Length]  
    Width of the receiver fields
 
 ## Date and Place Line
 
- - letter_date_place_line [Content]
+ - `letter_date_place_line` [Content]  
    Specify a custom line to go above the letter title instead of the following.
- - letter_date [Content]
+ - `letter_date` [Content]  
    Date of the letter.
- - letter_place [Content]
+ - `letter_place` [Content]  
    Place of the letter.
- - letter_date_place_align [Align]
+ - `letter_date_place_align` [Align]  
    Alignment of the place and date
    
 ## Document Start
 
- - title_spacing [Length]
+ - `title_spacing` [Length]  
    Spacing before the title.
- - title [Content]
+ - `title` [Content]  
    Content of the title.
- - opening_spacing [Length]
+ - `opening_spacing` [Length]  
    Spacing before the letter opening.
- - opening [Content]
+ - `opening` [Content]  
    Content of the opening (e.g. "Dear Sir....").
    
 ## Document End
- - closing_spacing [Length]
+ - `closing_spacing` [Length]  
    Spacing before the closing.
- - closing [Content]
+ - `closing` [Content]  
    Content of the closing (e.g. "kind regards").
- - signature_spacing [Length]
+ - `signature_spacing` [Length]  
    Spacing before the signature.
- - signature [Content]
+ - `signature` [Content]  
    Content of the signature
 
 # Resources
