@@ -1,69 +1,83 @@
 # Typst Letter Template
 
-Template for DIN 5008 and (Swiss) C5 Letter with window.
+Typst templates for DIN 5008 A/B and Swiss C5 Letter with window.
 
-# Example document
-
-``` typst
-#import "./template.typ": letter
-#show: letter.with(
-    format: "DIN-5008-A",
-)
-#lorem(40)
-
-```
+![](preview.png)
  
 # Parameters
 
-## Misc
+## Document Settings
 
-| Parameter | Description                  | Supportedl Types | Default |
-|-----------|------------------------------|------------------|---------|
-| debug     | Whether or not to show lines | Bool             | false   |
- 
-## Content
+ - debug [Bool] (default=false)
+   Whether or not to show the debug lines.
+ - _page [Dict] (default=(:))
+   Overwrite page settings.
+ - format [String] (default=none) [REQUIRED]
+   Format of the letter. Must be one of "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT"
+ - margin [Dict] 
+   Margins of the document. [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)
+ - document_start_min [Length] 
+   Minimum space between top margin and beginning of the letter content.
+   
+## Sender
 
-| Parameter    | Description                                            | Supportedl Types |
-|--------------|--------------------------------------------------------|------------------|
-| sender       | Info about the sender of the letter                    | array / content  |
-| receiver     | Address of the receiver                                | array            |
-| letter_date  | Date of the letter                                     | content          |
-| letter_place | Place of the letter                                    | content          |
-| title        | Title of the letter                                    | content          |
-| opening      | Opening words of the letter (e.g. "Dear Sir or Madam") | content          |
-| closing      | Closing words of the letter (e.g. "kind regards")      | content          |
-| signature    | Your name                                              | content          |
-| return_to    | Line with the return Address                           | content          |
-| remark_zone  | Content of the remark zone                             | content          |
+ - sender [Array, Content] (default: none)
+   Content or array of lines for the sender field. 
+ - sender_position [Dict] (default: none)
+   Position of the sender field.
+ - sender_width [Length]
+   Width of the sender field.
 
-## Format
+## Receiver
 
- - If `format` is set, all the others will be set to a default value. 
- - Positions are absolute and independent of the margins.
+ - show_return_to [Bool]
+   Whether or not to show the return_to field.
+ - return_to [Content]
+   Content of the return_to field.
+ - show_remark_zone [Bool]
+   Whether or not to show the remark_zone field.
+ - remark_zone [Content]
+   Content of the remark_zone field.
+ - remark_zone_align [Align] (FORMAT_SPECIFIC)
+   Alignment of the remark_zone.
+ - receiver [Content]
+   Content of the receiver field.
+ - receiver_position [Dict]
+   Position of the receiver fields (`top: [Length]`, `left: [Length]`) 
+ - receiver_width [Length]
+   Width of the receiver fields
 
-| Parameter         | Supportedl Types/Values                       |
-|-------------------|-----------------------------------------------|
-| format            | "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT" |
-| show_puncher_mark | Bool                                          |
-| show_fold_mark    | Bool                                          |
-| sender_position   | Dict (top: Length, left: Length)              |
-| sender_width      | Length                                        |
-| receiver_position | Dict (top: Length, left: Length)              |
-| receiver_width    | Length                                        |
-| content_start_min | Length                                        |
-| show_return_to    | Bool                                          |
-| show_remark_zone  | Bool                                          |
+## Date and Place Line
 
-Independent fields of the `format`
-    
-| Parameter         | Supportedl Types/Values                                                            |
-|-------------------|------------------------------------------------------------------------------------|
-| title_spacing     | Length                                                                             |
-| opening_spacing   | Length                                                                             |
-| closing_spacing   | Length                                                                             |
-| signature_spacing | Length                                                                             |
-| margin            | Dict (see [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)) |
+ - letter_date_place_line [Content]
+   Specify a custom line to go above the letter title instead of the following.
+ - letter_date [Content]
+   Date of the letter.
+ - letter_place [Content]
+   Place of the letter.
+ - letter_date_place_align [Align]
+   Alignment of the place and date
+   
+## Document Start
 
+ - title_spacing [Length]
+   Spacing before the title.
+ - title [Content]
+   Content of the title.
+ - opening_spacing [Length]
+   Spacing before the letter opening.
+ - opening [Content]
+   Content of the opening (e.g. "Dear Sir....").
+   
+## Document End
+ - closing_spacing [Length]
+   Spacing before the closing.
+ - closing [Content]
+   Content of the closing (e.g. "kind regards").
+ - signature_spacing [Length]
+   Spacing before the signature.
+ - signature [Content]
+   Content of the signature
 
 # Resources
 
@@ -81,4 +95,4 @@ Independent fields of the `format`
    [issue](https://github.com/typst/typst/issues/204)
  - [ ] Find out how scrlttr2 in latex handles spacing (e.g. signature_spacing)
  - https://github.com/typst/typst/issues/763
- - [ ] Handle `page` overrides (probably requires [this](https://github.com/typst/typst/issues/763))
+ - [ ] Handle `page` overrides if possible (probably requires [this](https://github.com/typst/typst/issues/763))
