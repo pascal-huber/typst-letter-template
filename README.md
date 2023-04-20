@@ -2,7 +2,7 @@
 
 Typst templates for DIN 5008 A/B and Swiss C5 Letter with window.
 
-![](preview.png)
+![preview](./preview.png)
  
 # Parameters
 
