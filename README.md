@@ -12,7 +12,7 @@ Typst templates for DIN 5008 A/B and Swiss C5 Letter with window.
    Whether or not to show the debug lines.
  - `_page` [Dict] (default=(:))  
    Overwrite page settings.
- - `format` [String] (default=none) [REQUIRED]  
+ - `format` [String] (default=none)
    Format of the letter. Must be one of "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT"
  - `margin` [Dict]  
    Margins of the document. [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)
@@ -38,7 +38,7 @@ Typst templates for DIN 5008 A/B and Swiss C5 Letter with window.
    Whether or not to show the remark_zone field.
  - `remark_zone` [Content]  
    Content of the remark_zone field.
- - `remark_zone_align` [Align] (FORMAT_SPECIFIC)  
+ - `remark_zone_align` [Align]  
    Alignment of the remark_zone.
  - `receiver` [Content]  
    Content of the receiver field.
