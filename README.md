@@ -121,10 +121,10 @@ Swiss C5 Letter.
 
 # Similar Projects
 
- - (dvdvgt/typst-letter)[https://github.com/dvdvgt/typst-letter]: A typst
+ - [dvdvgt/typst-letter](https://github.com/dvdvgt/typst-letter): A typst
    template for a DIN 5008 inspired letter with the goal to fit nicely into C6/5
    envelops.
- - (qjcq/awesome-typst)[https://github.com/qjcg/awesome-typst]: Awesome Typst
+ - [qjcq/awesome-typst](https://github.com/qjcg/awesome-typst): Awesome Typst
    Links 
 
 
@@ -138,3 +138,4 @@ Swiss C5 Letter.
    [discussion](https://github.com/typst/typst/issues/303),
    [issue](https://github.com/typst/typst/issues/204)
  - [ ] Put `margin` into format defaults
+ - [ ] Load data from json/yaml files
