@@ -10,6 +10,10 @@
             })
         },
     ),
+    _text: (
+        font: "Helvetica", 
+        size: 12pt,
+    ),
     letter_date: "20.04.2153",
     letter_place: "Weitfortistan",
     signature: "Hanspeter Müller",

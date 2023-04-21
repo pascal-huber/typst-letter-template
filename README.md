@@ -4,16 +4,32 @@ A customizable Typst letter template with some presets for DIN 5008 A/B and
 Swiss C5 Letter.
 
 ![preview](./preview.png)
- 
-# Parameters
 
-## Document Settings
+# Letter Structure
+
+ - The sender field is a rectangle positioned absolutely.
+ - The receiver field is a rectangle positioned absolutely right after the
+   `return_to` and `remark_zone`. In DIN 5008 B, `return_to` content is rendered
+   inside the `remark_zone`
+ - The remaining content of the letter is as follows:
+   - Date and Place Line
+   - Title
+   - Opening
+   - Body (your content)
+   - Closing
+   - Signature
+ 
+# Letter Parameters
+
+## Letter Settings
 
  - `debug` [Bool] (default=false)  
    Whether or not to show the debug lines.
  - `_page` [Dict] (default=(:))  
    Overwrite page settings.
- - `format` [String] (default=none)  
+ - `_text` [Dict] (default=(:))  
+   Overwrite text settings.
+ - `format` [String] (default="DIN-5008-B")  
    Format of the letter. Must be one of "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT"
  - `margin` [Dict]  
    Margins of the document. [doc](https://typst.app/docs/reference/layout/page/#parameters--margin)
@@ -52,7 +68,7 @@ Swiss C5 Letter.
  - `receiver_width` [Length]  
    Width of the receiver fields
 
-## Date and Place Line
+## Date and Place
 
  - `show_date_place` [Bool]  
    Wheter or not to show the date/place
@@ -103,13 +119,22 @@ Swiss C5 Letter.
  - [Swiss
    Addressing](https://www.post.ch/-/media/portal-opp/pm/dokumente/briefe-spezifikation-gestaltung.pdf?sc_lang=de&hash=BB181E74C5D3A0D1D49A954793EA670A)
 
+# Similar Projects
+
+ - (dvdvgt/typst-letter)[https://github.com/dvdvgt/typst-letter]: A typst
+   template for a DIN 5008 inspired letter with the goal to fit nicely into C6/5
+   envelops.
+ - (qjcq/awesome-typst)[https://github.com/qjcg/awesome-typst]: Awesome Typst
+   Links 
+
 
 # TODO
+ - [ ] Refactor Hard
+ - [ ] Use document properties
+ - [ ] Make remaining settings customizable
  - [ ] Add C5 Layout with window on the left side
  - [ ] Use datetime type (and today function) as soon as it exists
    [PR](https://github.com/typst/typst/pull/435),
    [discussion](https://github.com/typst/typst/issues/303),
    [issue](https://github.com/typst/typst/issues/204)
- - [ ] Find out how scrlttr2 in latex handles spacing (e.g. signature_spacing)
- - https://github.com/typst/typst/issues/763
- - [ ] Handle `page` overrides if possible (probably requires [this](https://github.com/typst/typst/issues/763))
+ - [ ] Put `margin` into format defaults

@@ -1,19 +1,11 @@
-#let get_val(name, user_page, default_page, default_value) = {
-    if user_page.keys().find({x => x == name}) != none {
-        user_page.at(name)
-    } else if default_page.keys().find({x => x == name}) != none {
-        default_page.at(name)
-    } else {
-        default_value
-    }
-}
-
 #let letter(
 
     // Document settings
     debug: false,
-    _page: (:), // NOTE: hack to override page values
-    format: none,
+    _page: (:),
+    _text: (:),
+    format: "DIN-5008-B",
+    // FIXME: Put margin into the defaults for each format.
     margin: (
         top: 3cm,
         bottom: 3cm,
@@ -21,7 +13,7 @@
         right: 20mm,
     ),
     content_start_min: 90mm, // TODO: find a good value for content_start_min
-    content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all // TODO: add to README
+    content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all 
     justify_content: true,
 
     // Sender Field
@@ -64,15 +56,16 @@
     signature: none,
 
     // Indicator Lines
-    show_puncher_mark: none,
-    show_fold_mark: none,
+    show_puncher_mark: false,
+    show_fold_mark: false,
 
     // The letter body.
     body
 ) = {
 
-
-    // Set the default values for the format (unless overridden by user)
+    // #####################################################
+    // Default Values Definition
+    // #####################################################
     let default_values = (
         sender_position: (
             "DIN-5008-A": (left: 125mm, top: 32mm),
@@ -125,6 +118,10 @@
             "C5-WINDOW-RIGHT": left,
         )
     )
+
+    // #####################################################
+    // Set Default Format Values
+    // #####################################################
     if sender_position == none {
         sender_position = default_values.at("sender_position").at(format)
     }
@@ -156,14 +153,10 @@
         letter_date_place_align = default_values.at("letter_date_place_align").at(format)
     }
 
-    // Set the body font.
-    // TODO: check if we can override this
-    set text(font: "Source Sans Pro", size: 10pt)
-
-    // FIXME: this is a nasty hack because we can not simple set the page on the
-    // caller side. Being able to query page properties could maybe help making
-    // this hack a bit nicer (https://github.com/typst/typst/issues/763).
-    let default_page = (
+    // #####################################################
+    // Set Page
+    // #####################################################
+    set page(
         paper: "a4",
         margin: (
             left: margin.left,
@@ -181,27 +174,16 @@
         },
         numbering: none,
     )
-    set page(
-        paper: get_val("paper", _page, default_page, "a4"),
-        // NOTE: height/width can not be set like as they don't accept "none"
-        // width: get_val("width", _page, default_page, none), height:
-        // get_val("height", _page, default_page),
-        flipped: get_val("flipped", _page, default_page, false),
-        margin: get_val("margin", _page, default_page, auto),
-        columns: get_val("columns", _page, default_page, 1),
-        fill: get_val("fill", _page, default_page, none),
-        numbering: get_val("numbering", _page, default_page, none),
-        number-align: get_val("number-align", _page, default_page, center),
-        header: get_val("header", _page, default_page, none),
-        // FIXME: find the default value for header-ascent
-        // header-ascent: get_val("header-ascent", _page, default_page, none),
-        footer: get_val("footer", _page, default_page, none),
-        // FIXME: find the default value for footer-descent
-        // footer-descent: get_val("footer-descent", _page, default_page, none),
-        background: get_val("background", _page, default_page, none),
-        foreground: get_val("foreground", _page, default_page, none),
-    )
+    set page(.._page)
 
+    // #####################################################
+    // Set Text
+    // #####################################################
+    set text(
+        font: "Helvetica", 
+        size: 12pt,
+    );
+    set text(.._text)
 
     if show_puncher_mark {
         place(
@@ -211,6 +193,9 @@
         )
     }
 
+    // #####################################################
+    // Fold Marks
+    // #####################################################
     if show_fold_mark {
         {
             place(
@@ -226,7 +211,9 @@
         }
     }
 
-    // sender
+    // #####################################################
+    // Sender
+    // #####################################################
     let sender_rect = rect(
         width: sender_width,
         stroke: if debug {blue} else {none},
@@ -244,7 +231,9 @@
         sender_rect
     )
 
-    // return address (DIN 5008 Form A only)
+    // #####################################################
+    // Receiver - Return To
+    // #####################################################
     if show_return_to {
         place(
             dy: receiver_position.top - margin.top,
@@ -262,7 +251,9 @@
         )
     }
 
-    // remark zone
+    // #####################################################
+    // Receiver - Remark Zone
+    // #####################################################
     if show_remark_zone {
         place(
             dy: receiver_position.top - margin.top + if show_return_to {5mm} else {0mm},
@@ -284,7 +275,9 @@
         )
     }
 
-    // receiver address
+    // #####################################################
+    // Receiver - Address
+    // #####################################################
     place(
         dy: receiver_position.top - margin.top + 5mm + 12.7mm,
         dx: receiver_position.left - margin.left,
@@ -296,17 +289,21 @@
         )
     )
 
-    // spacing to content
+    // #####################################################
+    // Spacing To Content
+    // #####################################################
     style(styles => {
         v(calc.max(
-            45mm + receiver_position.top - margin.top,
-            measure(sender_rect, styles).height + sender_position.top - margin.top,
-            content_start_min - margin.top,
-        ))
+            45mm + receiver_position.top,
+            measure(sender_rect, styles).height + sender_position.top,
+            content_start_min,
+        ) - margin.top + content_spacing)
     })
     v(content_spacing)
 
-    // content
+    // #####################################################
+    // Content
+    // #####################################################
     {
         set par(justify: justify_content)
         if show_date_place {
