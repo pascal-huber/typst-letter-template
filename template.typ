@@ -12,7 +12,7 @@
         left: 25mm,
         right: 20mm,
     ),
-    content_start_min: 90mm, // TODO: find a good value for content_start_min
+    content_start_min: 100mm, // TODO: find a good value for content_start_min
     content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all 
     justify_content: true,
 
@@ -299,7 +299,6 @@
             content_start_min,
         ) - margin.top + content_spacing)
     })
-    v(content_spacing)
 
     // #####################################################
     // Content
