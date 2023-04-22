@@ -128,7 +128,7 @@
             if state.date_place.place != none and state.date_place.date != none {
                 text(", ")
             }
-            state.date_place.at("date")
+            state.date_place.date
         }
     })
     body

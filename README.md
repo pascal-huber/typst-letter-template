@@ -80,9 +80,9 @@ Example:
 
 ```
 settings: (
-    min_content_spacing: 100mm, // TODO: find a good value for min_content_spacing
-    content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all 
-    justify_content: true,
+  min_content_spacing: 100mm, // TODO: find a good value for min_content_spacing
+  content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all 
+  justify_content: true,
 ),
 ```
 
@@ -98,13 +98,13 @@ settings: (
 Example:
 ```
 sender: (
-    content: (
-      "John Doe",
-      "Somestreet 15",
-      "1234 New York",
-    )
-    position: (left: 110mm, top: 20mm),
-    width: 80mm,
+  content: (
+    "John Doe",
+    "Somestreet 15",
+    "1234 New York",
+  )
+  position: (left: 110mm, top: 20mm),
+  width: 80mm,
 ),
 ```
 
@@ -128,16 +128,16 @@ sender: (
 Example:
 ```
 receiver: (
-    position: (left: 20mm, top: 20mm),
-    width: 80mm,
-    return_to: {text("some address...")},
-    remark_zone: "no remarks...",
-    remark_zone_align: top,
-    content: (
-      "Peter Doe",
-      "Somestreet 16",
-      "1234 New York",
-    ),
+  position: (left: 20mm, top: 20mm),
+  width: 80mm,
+  return_to: {text("some address...")},
+  remark_zone: "no remarks...",
+  remark_zone_align: top,
+  content: (
+    "Peter Doe",
+    "Somestreet 16",
+    "1234 New York",
+  ),
 ),
 ```
 
@@ -154,9 +154,9 @@ receiver: (
 Example:
 ``` 
 date_place: (
-    date: "20.04.2023",
-    place: "Weitfortistan",
-    align: left,
+  date: "20.04.2023",
+  place: "Weitfortistan",
+  align: left,
 ),
 ``` 
    
@@ -227,6 +227,14 @@ signature: (
  - `fold_marks` [Array]  
    Lenghts from top of page of the fold marks. Note that `fold_marks: (1cm)` is invalid as `(1cm)` has type length use `fold_marks: (1cm,)` instead.
 
+Example:
+```
+indicator_lines: (
+  show_puncher_mark: true,
+  fold_marks: (2cm,)
+)
+```
+
 # Resources
 
  - [DIN 5008 Form A](https://de.wikipedia.org/wiki/DIN_5008#/media/Datei:DIN_5008,_Form_A.svg)
@@ -245,15 +253,11 @@ signature: (
 
 # TODO
  - [ ] Use document properties
- - [ ] Remove magic constants
+ - [ ] Remove magic constants, add parameters
  - [ ] Add C5 Layout with window on the left side
  - [ ] Use datetime type (and today function) as soon as it exists
    [PR](https://github.com/typst/typst/pull/435),
    [discussion](https://github.com/typst/typst/issues/303),
    [issue](https://github.com/typst/typst/issues/204)
  - [ ] Decide if rending return_to and remark_zone is okay for C5-WINDOW-RIGHT
- - [ ] Load data from json/yaml files
- - [ ] Remove content from date_place
- - [ ] Can _page take none?
- - [ ] Merge signature data into closing?
- - [ ] Add line Break between return_to and remark_zone
+ - [ ] Create an example with json/yaml data
