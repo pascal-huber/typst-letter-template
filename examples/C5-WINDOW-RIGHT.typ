@@ -1,5 +1,5 @@
 #import "../template.typ": letter
-#let letter = letter.with(
+#show: letter.with(
     format: "C5-WINDOW-RIGHT",
     _page: (
         header: {
@@ -32,5 +32,19 @@
         text("Weitfortistan")
     }
 )
-#show: letter
-#lorem(1000)
+
+#lorem(40)
+
+```rust
+pub fn f(x: &mut i32) -> i32 {
+    3
+}
+```
+
+#lorem(60)
+
+#lorem(30)
+
+#lorem(530)
+
+

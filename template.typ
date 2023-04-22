@@ -1,13 +1,13 @@
 #let letter(
 
-    // Document settings
+    // Letter Settings
     debug: false,
     _page: (:),
     _text: (:),
     format: "DIN-5008-B",
-    // FIXME: Put margin into the defaults for each format.
+    // TODO: Maybe put margin into the defaults for each format.
     margin: (
-        top: 3cm,
+        top: 4cm,
         bottom: 3cm,
         left: 25mm,
         right: 20mm,
@@ -15,6 +15,14 @@
     content_start_min: 100mm, // TODO: find a good value for content_start_min
     content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all 
     justify_content: true,
+
+    // Indicator Lines
+    show_puncher_mark: true,
+    // NOTE: `fold_marks: (1cm)` is invalid as `(1cm)` has type length use
+    //  `fold_marks: (1cm,)` instead
+    // NOTE: "none_at_all" allows the user to set it to `none` or `()` to
+    //  disable it.
+    fold_marks: "none_at_all", 
 
     // Sender Field
     sender: none,
@@ -55,10 +63,6 @@
     signature_spacing: 8mm,
     signature: none,
 
-    // Indicator Lines
-    show_puncher_mark: false,
-    show_fold_mark: false,
-
     // The letter body.
     body
 ) = {
@@ -78,9 +82,9 @@
             "C5-WINDOW-RIGHT": 85mm,
         ),
         receiver_position: (
-            "DIN-5008-A": (left: 20mm + 5mm, top: 27mm), // TODO: unsure about those 5mm
-            "DIN-5008-B": (left: 20mm + 5mm, top: 45mm), // TODO: unsure about those 5mm
-            "C5-WINDOW-RIGHT": (left: 120mm, top: 50mm - 17.7mm) // minus return address and remark_zone
+            "DIN-5008-A": (left: 20mm + 5mm, top: 27mm), // NOTE: 5mm are "padding"
+            "DIN-5008-B": (left: 20mm + 5mm, top: 45mm), // NOTE: 5mm are "padding"
+            "C5-WINDOW-RIGHT": (left: 120mm, top: 50mm - 17.7mm) // NOTE: 17.7mm because no return_to and remark_zone
         ),
         receiver_width: (
             "DIN-5008-A": 85mm,
@@ -102,21 +106,21 @@
             "DIN-5008-B": bottom,
             "C5-WINDOW-RIGHT": top,
         ),
-        show_fold_mark: (
-            "DIN-5008-A": true,
-            "DIN-5008-B": true,
-            "C5-WINDOW-RIGHT": false,
-        ),
         show_puncher_mark: (
             "DIN-5008-A": true,
             "DIN-5008-B": true,
             "C5-WINDOW-RIGHT": true,
         ),
+        fold_marks: (
+            "DIN-5008-A": (87mm, 87mm+105mm),
+            "DIN-5008-B": (105mm, 2*105mm),
+            "C5-WINDOW-RIGHT": (),
+        ),
         letter_date_place_align: (
             "DIN-5008-A": right,
             "DIN-5008-B": right,
             "C5-WINDOW-RIGHT": left,
-        )
+        ),
     )
 
     // #####################################################
@@ -143,11 +147,11 @@
     if remark_zone_align == none {
         remark_zone_align = default_values.at("remark_zone_align").at(format)
     }
-    if show_fold_mark == none {
-        show_fold_mark = default_values.at("show_fold_mark").at(format)
-    }
     if show_puncher_mark == none {
         show_puncher_mark = default_values.at("show_puncher_mark").at(format)
+    }
+    if fold_marks == "none_at_all" {
+        fold_marks = default_values.at("fold_marks").at(format)
     }
     if letter_date_place_align == none {
         letter_date_place_align = default_values.at("letter_date_place_align").at(format)
@@ -185,28 +189,32 @@
     );
     set text(.._text)
 
+    // #####################################################
+    // Puncher Mark
+    // #####################################################
     if show_puncher_mark {
         place(
-        dy: 148.5mm - margin.top,
-        dx: 0cm - margin.left + 5mm,
-        line(length: 0.6cm, stroke: 0.5pt + rgb("#777777"))
+            dy: 50% - 0.5*margin.top + 0.5*margin.bottom,
+            dx: 0cm - margin.left + 9mm,
+            line(
+                length: 0.4cm, 
+                stroke: 0.25pt + rgb("#777777")
+            )
         )
     }
 
     // #####################################################
     // Fold Marks
     // #####################################################
-    if show_fold_mark {
-        {
+    if type(fold_marks) == "array" {
+        for mark in fold_marks {
             place(
-                dy: if format == "DIN-5008-A" {87mm} else {105mm} - margin.top,
-                dx: 0cm - margin.left + 7mm,
-                line(length: 0.4cm, stroke: 0.5pt + rgb("#777777"))
-            )
-            place(
-                dy: if format == "DIN-5008-A" {87mm + 105mm} else {2*105mm} - margin.top,
-                dx: 0cm - margin.left + 7mm,
-                line(length: 0.4cm, stroke: 0.5pt + rgb("#777777"))
+                dy: mark - margin.top,
+                dx: 0cm - margin.left + 9mm,
+                line(
+                    length: 0.2cm, 
+                    stroke: 0.25pt + rgb("#777777")
+                )
             )
         }
     }

@@ -39,6 +39,13 @@ Swiss C5 Letter.
    Minimum spacing between sender/receiver and letter content.
  - `justify_content` [Bool]  
    Wheter or not to justify the content.
+
+## Indicator Lines
+ - `show_puncher_mark` [Bool]  
+   Wheter or not to show the puncher mark.
+ - `fold_marks` [Array]  
+   Lenghts from top of page of the fold marks. Note that `fold_marks: (1cm)` is invalid as `(1cm)` has type length use `fold_marks: (1cm,)` instead.
+
    
 ## Sender
 

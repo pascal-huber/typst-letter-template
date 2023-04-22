@@ -1,3 +1,4 @@
+#set document(title: "asdf")
 #import "../template.typ": letter
 #show: letter.with(
     debug: false,
