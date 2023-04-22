@@ -116,6 +116,8 @@ sender: (
    Width of the receiver fields
  - `return_to` [Content, String]  
    Content of the return_to field.
+ - `return_to_merge` [Bool]  
+   Render content of `return_to` at the end of `remkar_zone`.
  - `remark_zone` [Content, String]  
    Content of the remark_zone field.
  - `remark_zone_align` [Align]  

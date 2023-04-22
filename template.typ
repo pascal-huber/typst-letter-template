@@ -38,6 +38,11 @@
         "DIN-5008-B": bottom,
         "C5-WINDOW-RIGHT": top,
     ),
+    return_to_merge: (
+        "DIN-5008-A": false,
+        "DIN-5008-B": true,
+        "C5-WINDOW-RIGHT": true,
+    ),
     // TODO: remove show_puncher_mark from format options
     show_puncher_mark: (
         "DIN-5008-A": true,
@@ -182,7 +187,7 @@
 
         // NOTE: Merge return_to and remark_zone
         // TODO: create parameters for return_to formatting
-        if receiver.return_to != none {
+        if receiver.return_to_merge == true and receiver.return_to != none {
             receiver.remark_zone = {
                 {
                     set text(size: 0.8em)
@@ -199,17 +204,19 @@
         }
 
         // receiver return_to
-        place(
-            dy: receiver.position.top - state._page.margin.top,
-            dx: receiver.position.left - state._page.margin.left,
-            rect(
-                width: receiver.width,
-                height: 5mm, 
-                stroke: if state.debug {red} else {none},
-                inset: (bottom: 0pt),
-                receiver.return_to
+        if receiver.return_to_merge == false {
+            place(
+                dy: receiver.position.top - state._page.margin.top,
+                dx: receiver.position.left - state._page.margin.left,
+                rect(
+                    width: receiver.width,
+                    height: 5mm, 
+                    stroke: if state.debug {red} else {none},
+                    inset: (bottom: 0pt),
+                    receiver.return_to
+                )
             )
-        )
+        }
 
         // receiver remark_zone
         place(
@@ -319,6 +326,7 @@
             remark_zone_align: default_values.at("remark_zone_align").at(format),
             remark_zone: none,
             return_to: none,
+            return_to_merge: default_values.at("remark_zone_align").at(format),
             content: none,
             ..receiver
         ),

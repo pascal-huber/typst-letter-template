@@ -2,14 +2,6 @@
 #show: init.with(
     format: "DIN-5008-B",
     title: "Writing Letters in Typst is Easy",
-    // _page: (
-    //     margin: (
-    //         top: 0cm,
-    //         left: 0cm,
-    //         right: 0cm,
-    //         bottom: 0cm,
-    //     )
-    // ),
     settings: (
         min_content_spacing: 10cm,
     ),
@@ -21,7 +13,7 @@
         place: "Weitfortistan",
     ),
     receiver: (
-        // return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
+        return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
         content: (
             "Peter Empfänger",
             "Bahnhofsstrasse 16",
