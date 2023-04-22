@@ -1,28 +1,32 @@
-#set document(title: "asdf")
-#import "../template.typ": letter
-#show: letter.with(
-    debug: false,
+#import "../template.typ": *
+#show: init.with(
     format: "DIN-5008-B",
-    _page: (
-        header: {
-            locate(loc => if loc.page() != 1 {
-                align(right)[The cool kids use Typst!]
-                line(length: 100%, stroke: 1pt + rgb("#777777"))
-            })
-        },
+    title: "Writing Letters in Typst is Easy",
+    // _page: (
+    //     margin: (
+    //         top: 0cm,
+    //         left: 0cm,
+    //         right: 0cm,
+    //         bottom: 0cm,
+    //     )
+    // ),
+    settings: (
+        min_content_spacing: 10cm,
     ),
-    _text: (
-        font: "Helvetica", 
-        size: 12pt,
+    opening: "Dear Sir, Madam or Mother,",
+    closing: "Peace, I'm out",
+    signature: "Hansli",
+    date_place: (
+        date: "20.04.2023",
+        place: "Weitfortistan",
     ),
-    letter_date: "20.04.2153",
-    letter_place: "Weitfortistan",
-    signature: "Hanspeter Müller",
-    return_to: "Firma AG · Sesamstrasse 15 · 1234 Berlin",
     receiver: (
-        "Peter Empfänger",
-        "Bahnhofsstrasse 16",
-        "1234 Nochvielweiterwegstadt",
+        // return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
+        content: (
+            "Peter Empfänger",
+            "Bahnhofsstrasse 16",
+            "1234 Nochvielweiterwegstadt",
+        ),
     ),
     sender: {
         image("logo.png", width: 100%, fit: "contain")
@@ -37,9 +41,14 @@
         linebreak()
         h(2mm)
         text("Weitfortistan")
-    }
+    },
 )
-#lorem(40)
+
+#show: date_place
+#show: title
+#show: opening
+
+#lorem(50)
 
 ```rust
 pub fn f(x: &mut i32) -> i32 {
@@ -47,8 +56,7 @@ pub fn f(x: &mut i32) -> i32 {
 }
 ```
 
-#lorem(60)
+#lorem(80)
+#lorem(20)
 
-#lorem(30)
-
-#lorem(530)
+#show: closing

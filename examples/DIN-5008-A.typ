@@ -1,41 +1,37 @@
-#import "../template.typ": letter
-#show: letter.with(
-    debug: false,
+#import "../template.typ": *
+#show: init.with(
     format: "DIN-5008-A",
-    _page: (
-        header: {
-            locate(loc => if loc.page() != 1 {
-                align(right)[The cool kids use Typst!]
-                line(length: 100%, stroke: 1pt + rgb("#777777"))
-            })
-        },
+    title: "Writing Letters in Typst is Easy",
+    opening: "Dear Sir, Madam or Mother,",
+    closing: "Peace, I'm out",
+    signature: "Hansli",
+    date_place: (
+        date: "20.04.2023",
+        place: "Weitfortistan",
     ),
-    letter_date: "20.04.2153",
-    letter_place: "Weitfortistan",
-    signature: "Hanspeter Müller",
-    return_to: "Firma AG · Sesamstrasse 15 · 1234 Weitwegstadt",
     receiver: (
-        "Peter Empfänger",
-        "Bahnhofsstrasse 16",
-        "1234 Weitwegstadt",
+        return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
+        content: (
+            "Peter Empfänger",
+            "Bahnhofsstrasse 16",
+            "1234 Nochvielweiterwegstadt",
+        ),
     ),
-    sender: {
-        image("logo.png", width: 100%, fit: "contain")
-        h(2mm)
-        text("Hanspeter Müller")
-        linebreak()
-        h(2mm)
-        text("Sesamstrasse 15")
-        linebreak()
-        h(2mm)
-        text("1234 Einestadt")
-        linebreak()
-        h(2mm)
-        text("Weitfortistan")
-    },
+    sender: (
+        content: (
+            "Hanspeter Müller",
+            "Sesamstrasse 15",
+            "1234 Einestadt",
+            "Weitfortistan",
+        )
+    )
 )
 
-#lorem(40)
+#show: date_place
+#show: title
+#show: opening
+
+#lorem(50)
 
 ```rust
 pub fn f(x: &mut i32) -> i32 {
@@ -43,9 +39,7 @@ pub fn f(x: &mut i32) -> i32 {
 }
 ```
 
-#lorem(60)
+#lorem(80)
+#lorem(20)
 
-#lorem(30)
-
-#lorem(530)
-
+#show: closing
