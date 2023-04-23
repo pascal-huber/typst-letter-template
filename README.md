@@ -58,17 +58,17 @@ parameter dictionary.
  - `receiver` [Dict, none]   
    Info to render the receive fields ([see bellow](#receiver)).
  - `date_place` [Dict, String, none]
-   Info to render the `date_place` template ([see bellow](#date-place).
+   Info to render the `date_place` template ([see bellow](#date-place)).
  - `title` [Dict, String, none]
-   Info to render the `title` template ([see bellow](#title).
+   Info to render the `title` template ([see bellow](#title)).
  - `opening` [Dict, String, none]
-   Info to render the `title` template ([see bellow](#opening).
+   Info to render the `title` template ([see bellow](#opening)).
  - `closing` [Dict, String, none]
-   Info to render the closing ([see bellow](#closing).
+   Info to render the closing ([see bellow](#closing)).
  - `signature` [Dict, none]
-   Info to render the signature ([see bellow](#signature).
+   Info to render the signature ([see bellow](#signature)).
  - `indicator_lines` [Dict, none]
-   Info to render lines for the hole puncher and folding ([see bellow](#indicator-lines).
+   Info to render lines for the hole puncher and folding ([see bellow](#indicator-lines)).
 
 ## Settings
 
@@ -194,7 +194,7 @@ title: (
 
 Example:
 ```
-spacing: (
+opening: (
   spacing: 2mm,
   content: "Dear Sir or Madam,",
 )
