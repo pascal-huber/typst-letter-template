@@ -1,6 +1,5 @@
 #import "../template.typ": *
 #show: lttr_init.with(
-    debug: true,
     format: "DIN-5008-A",
     title: "Writing Letters in Typst is Easy",
     settings: (
@@ -15,6 +14,12 @@
     ),
     receiver: (
         return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
+        remark_zone: {
+            set text(fill: gray)
+            "Why would anyone write a gray remark?"
+            linebreak()
+            "...hideous..."
+        },
         address: (
             "Peter Empfänger",
             "Bahnhofsstrasse 16",

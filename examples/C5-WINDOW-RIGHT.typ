@@ -1,6 +1,5 @@
 #import "../template.typ": *
 #show: lttr_init.with(
-    debug: true,
     format: "C5-WINDOW-RIGHT",
     title: "Writing Letters in Typst is Easy",
     settings: (
