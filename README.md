@@ -32,8 +32,8 @@ Your letter content.
    default values for different formats. It also sets the `page` and `text`
    attributes.
  - `lttr_preamble` renders `lttr_sender`, `lttr_receiver`,
-    `lttr_indicator_lines`, `lttr_content_offset`, `lttr_title` and
-    `lttr_opening`. You can also call them seperately.
+    `lttr_indicator_lines`, `lttr_content_offset`, `lttr_date_place`,
+    `lttr_title` and `lttr_opening`. You can also call them seperately.
  - `lttr_closing` renders the closing line and the signature.
  
 # Init Parameters

@@ -46,7 +46,6 @@
         address: none,
     ),
     date_place: (
-        content: none,
         place: none,
         date: none,
     ),
@@ -358,6 +357,7 @@
     show: lttr_receiver
     show: lttr_indicator_lines
     show: lttr_content_offset
+    show: lttr_date_place
     show: lttr_title
     show: lttr_opening
     body

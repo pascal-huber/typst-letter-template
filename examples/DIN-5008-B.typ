@@ -2,9 +2,6 @@
 #show: lttr_init.with(
     format: "DIN-5008-B",
     title: "Writing Letters in Typst is Easy",
-    settings: (
-        min_content_spacing: 10cm,
-    ),
     opening: "Dear Sir, Madam or Mother,",
     closing: "Peace, I'm out",
     signature: "Hansli",
@@ -50,5 +47,3 @@ pub fn f(x: &mut i32) -> i32 {
 #lorem(20)
 
 #show: lttr_closing
-
-// #lttr_state()
