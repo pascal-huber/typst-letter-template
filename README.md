@@ -1,4 +1,4 @@
-# Typst lttr
+# typst l<sub>e</sub>tt<sub>e</sub>r
 
 A customizable Typst letter template with some presets for DIN 5008 A/B and
 Swiss C5 Letter.
