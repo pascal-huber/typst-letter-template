@@ -1,18 +1,18 @@
-// NOTE: letter_data contains all the data to render the letter
-#let letter_data = state("letter", none)
+// NOTE: lttr_data contains all the data to render the letter
+#let lttr_data = state("letter", none)
 
-// NOTE: max_dy keeps track of the largest offset dy (from the top margin) of
+// NOTE: lttr_max_dy keeps track of the largest offset dy (from the top margin) of
 //   absolutely positioned content (sender and receiver fields) such that we
 //   know how much vertical offset we need to add at the beginning of the letter
 //   content
-#let max_dy = state("max_dy", 0cm)
-#let update_max_dy(dy) = {
+#let lttr_max_dy = state("lttr_max_dy", 0cm)
+#let lttr_update_max_dy(dy) = {
     locate(loc => {
-        max_dy.update(x => calc.max(x, dy))
+        lttr_max_dy.update(x => calc.max(x, dy))
     })
 }
 
-#let default_values = (
+#let lttr_format_values = (
     sender_position: (
         "DIN-5008-A": (left: 125mm, top: 32mm),
         "DIN-5008-B": (left: 125mm, top: 50mm),
@@ -23,10 +23,35 @@
         "DIN-5008-B": 75mm,
         "C5-WINDOW-RIGHT": 85mm,
     ),
-    receiver_position: (
-        "DIN-5008-A": (left: 20mm + 5mm, top: 27mm), // NOTE: 5mm are "padding"
-        "DIN-5008-B": (left: 20mm + 5mm, top: 45mm), // NOTE: 5mm are "padding"
-        "C5-WINDOW-RIGHT": (left: 120mm, top: 50mm - 17.7mm) // NOTE: 17.7mm because no return_to and remark_zone
+    receiver_return_to_position: (
+        "DIN-5008-A": (left: 20mm + 5mm, top: 27mm),
+        "DIN-5008-B": none,
+        "C5-WINDOW-RIGHT": none,
+    ),
+    receiver_return_to_dimensions: (
+        "DIN-5008-A": (height: 5mm, width: 85mm),
+        "DIN-5008-B": none,
+        "C5-WINDOW-RIGHT": none,
+    ),
+    receiver_remark_zone_position: (
+        "DIN-5008-A": (left: 20mm + 5mm, top: 27mm + 5mm),
+        "DIN-5008-B": (left: 20mm + 5mm, top: 45mm),
+        "C5-WINDOW-RIGHT": none,
+    ),
+    receiver_remark_zone_dimensions: (
+        "DIN-5008-A": (height: 12.7mm, width: 85mm),
+        "DIN-5008-B": (height: 12.7mm + 5mm, width: 85mm),
+        "C5-WINDOW-RIGHT": none,
+    ),
+    receiver_address_position: (
+        "DIN-5008-A": (left: 20mm + 5mm, top: 27mm + 17.7mm),
+        "DIN-5008-B": (left: 20mm + 5mm, top: 45mm + 17.7mm),
+        "C5-WINDOW-RIGHT": (left: 120mm, top: 50mm)
+    ),
+    receiver_address_dimensions: (
+        "DIN-5008-A": (height: 27.3mm, width: 85mm),
+        "DIN-5008-B": (height: 27.3mm, width: 85mm),
+        "C5-WINDOW-RIGHT": (height: 27.3mm, width: 85mm),
     ),
     receiver_width: (
         "DIN-5008-A": 85mm,
@@ -38,12 +63,6 @@
         "DIN-5008-B": bottom,
         "C5-WINDOW-RIGHT": top,
     ),
-    return_to_merge: (
-        "DIN-5008-A": false,
-        "DIN-5008-B": true,
-        "C5-WINDOW-RIGHT": true,
-    ),
-    // TODO: remove show_puncher_mark from format options
     show_puncher_mark: (
         "DIN-5008-A": true,
         "DIN-5008-B": true,
@@ -61,10 +80,9 @@
     ),
 )
 
-#let indicator_lines_t(body) = {
+#let lttr_indicator_lines(body) = {
     locate(loc => {
-        let state = letter_data.at(loc);
-        // TODO: refactor this
+        let state = lttr_data.at(loc);
         if state.indicator_lines != none {
             if state.indicator_lines.show_puncher_mark {
                 place(
@@ -93,9 +111,9 @@
     body
 }
 
-#let closing(body) = {
+#let lttr_closing(body) = {
     locate(loc => {
-        let state = letter_data.at(loc);
+        let state = lttr_data.at(loc);
         if  state.closing.content != none {
             v(state.closing.spacing)
             state.closing.content
@@ -108,9 +126,9 @@
     body
 }
 
-#let opening(body) = {
+#let lttr_opening(body) = {
     locate(loc => {
-        let state = letter_data.at(loc);
+        let state = lttr_data.at(loc);
         if state.opening != none {
             v(state.opening.spacing)
             state.opening.content
@@ -119,9 +137,9 @@
     body
 }
 
-#let date_place(body) = {
+#let lttr_date_place(body) = {
     locate(loc => {
-        let state = letter_data.at(loc);
+        let state = lttr_data.at(loc);
         if state.date_place != none {
             set align(state.date_place.align)
             state.date_place.place
@@ -134,9 +152,9 @@
     body
 }
 
-#let title(body) = {
+#let lttr_title(body) = {
     locate(loc => {
-        let state = letter_data.at(loc);
+        let state = lttr_data.at(loc);
         if state.title != none {
             v(state.title.spacing)
             text(
@@ -149,11 +167,13 @@
     body
 }
 
-#let sender_t(body) = {
+#let lttr_sender(body) = {
     locate(loc => {
-        let state = letter_data.at(loc);
+        let state = lttr_data.at(loc);
         let sender_rect = rect(
             width: state.sender.width,
+            inset: 0cm,
+            outset: 0cm,
             stroke: if state.debug {blue} else {none},
             {
                 if type(state.sender.content) == "content" {
@@ -166,7 +186,7 @@
         let sender_position = if state.sender.position != none {
             state.sender.position
         } else {
-            (left: state._page.margin.left, top: state._page.margin.top)
+            (left: state._page.margin.left, top: state._page.margin.top) //state._page.margin.top)
         }
         place(
             dy: sender_position.top - state._page.margin.top,
@@ -174,91 +194,116 @@
             sender_rect
         )
         style(styles => {
-            update_max_dy(measure(sender_rect, styles).height + sender_position.top + state.settings.content_spacing)
+            lttr_update_max_dy(measure(sender_rect, styles).height + sender_position.top + state.settings.content_spacing)
         })
     })
     body
 }
 
-#let receiver_t(body) = {
+#let lttr_receiver_return_to(body) = {
     locate(loc => {
-        let state = letter_data.at(loc);
-        let receiver = state.receiver
-
-        // NOTE: Merge return_to and remark_zone
-        // TODO: create parameters for return_to formatting
-        if receiver.return_to_merge == true and receiver.return_to != none {
-            receiver.remark_zone = {
-                {
-                    set text(size: 0.8em)
-                    underline(receiver.return_to)
-                }
-                receiver.remark_zone
-            }
-            receiver.return_to = none
-        } else {
-            receiver.return_to = {
-                set text(size: 0.8em)
-                underline(receiver.return_to)
-            }
-        }
-
-        // receiver return_to
-        if receiver.return_to_merge == false {
+        let state = lttr_data.at(loc);
+        if state.receiver.return_to != none {
             place(
-                dy: receiver.position.top - state._page.margin.top,
-                dx: receiver.position.left - state._page.margin.left,
+                dy: state.receiver.return_to_position.top - state._page.margin.top,
+                dx: state.receiver.return_to_position.left - state._page.margin.left,
                 rect(
-                    width: receiver.width,
+                    width: state.receiver.return_to_dimensions.width,
                     height: 5mm, 
                     stroke: if state.debug {red} else {none},
-                    inset: (bottom: 0pt),
-                    receiver.return_to
+                    inset: (left: 0mm, right: 0mm),
+                    outset: 0cm,
+                    {
+                        set text(size: 0.8em)
+                        underline(state.receiver.return_to)
+                    }
                 )
             )
         }
+    })
+    body
+}
 
-        // receiver remark_zone
-        place(
-            // TODO: refactor this
-            dy: receiver.position.top - state._page.margin.top + if receiver.return_to != none {5mm} else {0mm},
-            dx: receiver.position.left - state._page.margin.left,
-            rect(
-                width: receiver.width,
-                height: 12.7mm + if receiver.return_to != none {0mm} else {5mm},
-                stroke: if state.debug {green} else {none},
-                {
-                    set align(receiver.remark_zone_align)
-                    set text(size: 0.8em)
-                    if receiver.return_to != none {
-                        underline(receiver.return_to)
-                        linebreak()
+
+#let lttr_receiver_remark_zone(body) = {
+    locate(loc => {
+        let state = lttr_data.at(loc);
+        if state.receiver.remark_zone_position != none {
+            place(
+                dy: state.receiver.remark_zone_position.top - state._page.margin.top,
+                dx: state.receiver.remark_zone_position.left - state._page.margin.left,
+                rect(
+                    width: state.receiver.remark_zone_dimensions.width,
+                    height: state.receiver.remark_zone_dimensions.height,
+                    stroke: if state.debug {green} else {none},
+                    inset: (left: 0mm, right: 0mm, top: 0mm),
+                    outset: 0pt,
+                    {
+                        set align(state.receiver.remark_zone_align)
+                        set text(size: 0.8em)
+                        state.receiver.remark_zone
                     }
-                    receiver.remark_zone
-                }
+                )
             )
-        )
+        }
+    })
+    body
+}
 
-        // receiver content
+#let lttr_receiver_address(body) = {
+    locate(loc => {
+        let state = lttr_data.at(loc);
         let receiver_rect = rect(
-            width: receiver.width,
-            height: 27.3mm,
+            width: state.receiver.address_dimensions.width,
+            height: state.receiver.address_dimensions.height,
             stroke: if state.debug {purple} else {none},
-            receiver.content.join(linebreak())
+            inset: (left: 0mm, right: 0mm, top: 0mm),
+            outset: 0pt,
+            state.receiver.address.join(linebreak()),
         )
         place(
-            dy: receiver.position.top - state._page.margin.top + 5mm + 12.7mm,
-            dx: receiver.position.left - state._page.margin.left,
+            dy: state.receiver.address_position.top - state._page.margin.top,
+            dx: state.receiver.address_position.left - state._page.margin.left,
             receiver_rect,
         )
         style(styles => {
-            update_max_dy(measure(receiver_rect, styles).height + state.receiver.position.top + state.settings.content_spacing)
+            lttr_update_max_dy(
+                measure(receiver_rect, styles).height
+                 + state.receiver.address_position.top
+                 + state.settings.content_spacing
+                )
         })
     })
     body
 }
 
-#let init(
+#let lttr_receiver(body) = {
+    show: lttr_receiver_return_to
+    show: lttr_receiver_remark_zone
+    show: lttr_receiver_address
+    body
+}
+
+#let lttr_content_offset(body) = {
+    locate(loc => {
+        let state = lttr_data.at(loc);
+        v(lttr_max_dy.at(loc) - state._page.margin.top + state.settings.content_spacing)
+        set par(justify: state.settings.justify_content)
+        body
+    })
+}
+
+#let lttr_preamble(body) = {
+    show: lttr_sender
+    show: lttr_receiver
+    show: lttr_indicator_lines
+    show: lttr_content_offset
+    show: lttr_title
+    show: lttr_opening
+    body
+}
+
+#let lttr_init(
     debug: false,
     format: "DIN-5008-B",
     _page: (:),
@@ -284,7 +329,7 @@
     _page = (
         paper: "a4", // TODO: maybe put paper in format defaults?
         margin: ( // TODO: maybe put margin in format defaults?
-            top: 4cm,
+            top: 3cm,
             bottom: 3cm,
             left: 25mm,
             right: 20mm,
@@ -299,6 +344,31 @@
         numbering: none,
         .._page,
     )
+    let receiver = (
+        return_to_position: lttr_format_values.at("receiver_return_to_position").at(format),
+        return_to_dimensions: lttr_format_values.at("receiver_return_to_dimensions").at(format),
+        remark_zone_position: lttr_format_values.at("receiver_remark_zone_position").at(format),
+        remark_zone_dimensions: lttr_format_values.at("receiver_remark_zone_dimensions").at(format),
+        address_position: lttr_format_values.at("receiver_address_position").at(format),
+        address_dimensions: lttr_format_values.at("receiver_address_dimensions").at(format),
+        remark_zone_align: lttr_format_values.at("remark_zone_align").at(format),
+        remark_zone: none,
+        return_to: none,
+        address: none,
+        ..receiver
+    )
+
+    // merge return_to into remark_zone
+    if receiver.return_to_position == none and receiver.return_to != none {
+        receiver.remark_zone = {
+            {
+                underline(receiver.return_to)
+                linebreak()
+                receiver.remark_zone
+            }
+        }
+        receiver.return_to = none
+    }
     
     let data = (
         debug: debug,
@@ -316,22 +386,13 @@
             ..settings,
         ),
         sender: (
-            position: default_values.at("sender_position").at(format),
-            width: default_values.at("sender_width").at(format),
+            position: lttr_format_values.at("sender_position").at(format),
+            width: lttr_format_values.at("sender_width").at(format),
             ..as_content_dict(sender),
         ),
-        receiver: (
-            position: default_values.at("receiver_position").at(format),
-            width: default_values.at("receiver_width").at(format),
-            remark_zone_align: default_values.at("remark_zone_align").at(format),
-            remark_zone: none,
-            return_to: none,
-            return_to_merge: default_values.at("remark_zone_align").at(format),
-            content: none,
-            ..receiver
-        ),
+        receiver: receiver,
         date_place: if date_place == none { none } else {(
-            align: default_values.at("letter_date_place_align").at(format),
+            align: lttr_format_values.at("letter_date_place_align").at(format),
             content: none,
             place: none,
             date: none,
@@ -358,23 +419,23 @@
             ..as_content_dict(signature),
         )},
         indicator_lines: if indicator_lines == none { none } else {(
-            show_puncher_mark: default_values.at("show_puncher_mark").at(format),
-            fold_marks: default_values.at("fold_marks").at(format),
+            show_puncher_mark: lttr_format_values.at("show_puncher_mark").at(format),
+            fold_marks: lttr_format_values.at("fold_marks").at(format),
             ..indicator_lines,
         )},
     )
+    // TODO: find out why I need to set page/text here
     set page(..data._page)
     set text(..data._text)
     style(styles => {
-        update_max_dy(data.settings.min_content_spacing)
+        lttr_update_max_dy(data.settings.min_content_spacing)
     })
-    letter_data.update(x => data)
-    show: sender_t
-    show: receiver_t
-    show: indicator_lines_t.with()
-    locate(loc => {
-        v(max_dy.at(loc) - data._page.margin.top + data.settings.content_spacing)
-        set par(justify: data.settings.justify_content)
-    })
+    lttr_data.update(x => data)
     body
+}
+
+#let lttr_state() = {
+    locate(loc => {
+        lttr_data.at(loc);
+    })
 }

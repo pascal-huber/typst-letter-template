@@ -1,7 +1,11 @@
 #import "../template.typ": *
-#show: init.with(
+#show: lttr_init.with(
+    debug: true,
     format: "DIN-5008-A",
     title: "Writing Letters in Typst is Easy",
+    settings: (
+        min_content_spacing: 10cm,
+    ),
     opening: "Dear Sir, Madam or Mother,",
     closing: "Peace, I'm out",
     signature: "Hansli",
@@ -11,25 +15,29 @@
     ),
     receiver: (
         return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
-        content: (
+        address: (
             "Peter Empfänger",
             "Bahnhofsstrasse 16",
             "1234 Nochvielweiterwegstadt",
         ),
     ),
-    sender: (
-        content: (
-            "Hanspeter Müller",
-            "Sesamstrasse 15",
-            "1234 Einestadt",
-            "Weitfortistan",
-        )
-    )
+    sender: {
+        image("logo.png", width: 100%, fit: "contain")
+        h(2mm)
+        text("Hanspeter Müller")
+        linebreak()
+        h(2mm)
+        text("Sesamstrasse 15")
+        linebreak()
+        h(2mm)
+        text("1234 Einestadt")
+        linebreak()
+        h(2mm)
+        text("Weitfortistan")
+    },
 )
 
-#show: date_place
-#show: title
-#show: opening
+#show: lttr_preamble
 
 #lorem(50)
 
@@ -42,4 +50,4 @@ pub fn f(x: &mut i32) -> i32 {
 #lorem(80)
 #lorem(20)
 
-#show: closing
+#show: lttr_closing

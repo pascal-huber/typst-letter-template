@@ -1,7 +1,10 @@
-# Typst Letter Template
+# Typst lttr
 
 A customizable Typst letter template with some presets for DIN 5008 A/B and
 Swiss C5 Letter.
+
+Please note that the template is still under development and subject to breaking
+changes.
 
 ![preview](./preview.png)
 
@@ -11,30 +14,34 @@ A letter should have the following form.
 
 ```
 #import "../template.typ": *
-#show: init.with(
+#show: lttr_init.with(
     format: "DIN-5008-B",
     title: "Writing Letters in Typst is Easy",
-    opening: "Dear Sir or Madam,,",
+    opening: "Dear Sir or Madam,",
     ...
 )
 
-#show: date_place
-#show: title
-#show: opening
+#show: lttr_preamble
 
 Your letter content.
 
-#show: closing
+#show: lttr_closing
 ```
 
- - `init` is responsible to compute all values from the parameters and default
-   values for different formats. It also renders the sender and receiver fields and indicator lines.
- - `date_place` renders a line with the location and date.
- - `title` renders the title line.
- - `opening` renders the opening line (e.g. Dear Sir or Madam,)
- - `closing` renders the closing line (e.g. kind regards) and the signature.
+ - `lttr_init` is responsible to compute all values from the parameters and
+   default values for different formats. It also sets the `page` and `text`
+   attributes.
+ - `lttr_preamble` renders `lttr_sender`, `lttr_receiver`,
+    `lttr_indicator_lines`, `lttr_content_offset`, `lttr_title` and
+    `lttr_opening`. You can also call them seperately.
+ - `lttr_closing` renders the closing line and the signature.
  
 # Init Parameters
+
+All Parameters except for `format` are optional. If not set, either a default
+value for your format will be used. If a content value is not set, the content
+will simply not be rendered. The following is the top level structure of the
+parameter dictionary.
 
  - `debug` [Bool] (default=false)  
    Whether or not to show the debug lines.
@@ -62,10 +69,6 @@ Your letter content.
    Info to render the signature ([see bellow](#signature).
  - `indicator_lines` [Dict, none]
    Info to render lines for the hole puncher and folding ([see bellow](#indicator-lines).
-
-All the following settings are optional. If they are not defined, a default
-value will be used or if some content is missing, it will simply not be
-rendered.
 
 ## Settings
 
@@ -110,30 +113,37 @@ sender: (
 
 ## Receiver
 
- - `position` [Dict]  
-   Position of the receiver fields (`top: [Length]`, `left: [Length]`) 
- - `width` [Length]  
-   Width of the receiver fields
- - `return_to` [Content, String]  
-   Content of the return_to field.
- - `return_to_merge` [Bool]  
-   Render content of `return_to` at the end of `remkar_zone`.
- - `remark_zone` [Content, String]  
-   Content of the remark_zone field.
+ - `return_to_position` [Dict]  
+   Position of the return_to field (`top: [Length]`, `left: [Length]`) 
+ - `return_to_dimensions` [Dict]  
+   Dimensions of the return_to field (`width: [Length]`, `height: [Length]`)
+ - `remark_zone_position` [Dict]  
+   Position of the remark_zone field (`top: [Length]`, `left: [Length]`) 
+ - `remark_zone_dimensions` [Dict]  
+   Dimensions of the remark_zone field (`width: [Length]`, `height: [Length]`)
+ - `address_position` [Dict]  
+   Position of the address field (`top: [Length]`, `left: [Length]`) 
+ - `address_dimensions` [Dict]  
+   Dimensions of the address field (`width: [Length]`, `height: [Length]`)
  - `remark_zone_align` [Align]  
    Alignment of the remark_zone.
- - `content` [Array]  
+ - `return_to` [Content, String]  
+   Content of the return_to field.
+ - `remark_zone` [Content, String]  
+   Content of the remark_zone field.
+ - `address` [Array]  
    Content of the receiver field.
+
+Note that DIN 5008 B has a combined field for `return_to` and `remark_zone`. If
+`return_to` is not none, it will be rendered at the end of the `remark_zone` (as
+in the following example.).
 
 Example:
 ```
 receiver: (
-  position: (left: 20mm, top: 20mm),
-  width: 80mm,
   return_to: {text("some address...")},
-  remark_zone: "no remarks...",
-  remark_zone_align: top,
-  content: (
+  remark_zone_align: bottom,
+  address: (
     "Peter Doe",
     "Somestreet 16",
     "1234 New York",
@@ -235,6 +245,10 @@ indicator_lines: (
 )
 ```
 
+# Other remarks
+
+ - `lttr_state` prints the entire state used to render the components.
+
 # Resources
 
  - [DIN 5008 Form A](https://de.wikipedia.org/wiki/DIN_5008#/media/Datei:DIN_5008,_Form_A.svg)
@@ -261,3 +275,4 @@ indicator_lines: (
    [issue](https://github.com/typst/typst/issues/204)
  - [ ] Decide if rending return_to and remark_zone is okay for C5-WINDOW-RIGHT
  - [ ] Create an example with json/yaml data
+ - [ ] Add locale and language defaults.
