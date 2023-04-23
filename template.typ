@@ -33,7 +33,7 @@
     ),
     _text: (
         font: "Helvetica", 
-        size: 12pt,
+        size: 11pt,
     ),
     settings: (
         min_content_spacing: 100mm, // TODO: find a good value for min_content_spacing
@@ -82,6 +82,7 @@
             remark_zone_align: top,
             address_position: (left: 20mm + 5mm, top: 27mm + 17.7mm),
             address_dimensions: (height: 27.3mm, width: 85mm),
+            address_align_v: top,
         ),
         indicator_lines: (
             show_puncher_mark: true,
@@ -103,6 +104,7 @@
             remark_zone_align: bottom,
             address_position: (left: 20mm + 5mm, top: 45mm + 17.7mm),
             address_dimensions: (height: 27.3mm, width: 85mm),
+            address_align_v: top,
         ),
         indicator_lines: (
             show_puncher_mark: true,
@@ -121,7 +123,8 @@
             return_to_position: none,
             remark_zone_position: none,
             address_position: (left: 120mm, top: 50mm),
-            address_dimensions: (height: 27.3mm, width: 85mm),
+            address_dimensions: (height: 30mm, width: 75mm),
+            address_align_v: horizon,
         ),
         indicator_lines: (
             show_puncher_mark: true,
@@ -313,7 +316,10 @@
             stroke: if state.debug {purple} else {none},
             inset: (left: 0mm, right: 0mm, top: 0mm),
             outset: 0pt,
-            state.receiver.address.join(linebreak()),
+            {
+                set align(state.receiver.address_align_v)
+                state.receiver.address.join(linebreak())
+            },
         )
         place(
             dy: state.receiver.address_position.top - state._page.margin.top,
@@ -348,21 +354,13 @@
 }
 
 #let lttr_preamble(body) = {
-    locate(loc => {
-        let state = lttr_data.at(loc);
-        // set page(..state._page)
-        // set text(..state._text)
-        style(styles => {
-            lttr_update_max_dy(state.settings.min_content_spacing)
-        })
-        show: lttr_sender
-        show: lttr_receiver
-        show: lttr_indicator_lines
-        show: lttr_content_offset
-        show: lttr_title
-        show: lttr_opening
-        body
-    })
+    show: lttr_sender
+    show: lttr_receiver
+    show: lttr_indicator_lines
+    show: lttr_content_offset
+    show: lttr_title
+    show: lttr_opening
+    body
 }
 
 #let lttr_init(
@@ -459,7 +457,6 @@
     })
     body
 }
-
 
 #let lttr_state() = {
     locate(loc => {

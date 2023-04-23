@@ -14,7 +14,6 @@
     ),
     receiver: (
         return_to: "Banana AG · Sesamstrasse 15 · 1234 Einestadt",
-        remark_zone: "remark",
         address: (
             "Peter Empfänger",
             "Bahnhofsstrasse 16",
