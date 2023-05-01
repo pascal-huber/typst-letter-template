@@ -52,23 +52,23 @@ parameter dictionary.
  - `_text` [Dict, none] (default=(:))  
    Overwrite text settings ([docs](https://typst.app/docs/reference/text/text/)).
  - `settings` [Dict, none]  
-   Basic settings ([see bellow](#settings)).
+   Basic settings ([see below](#settings)).
  - `sender` [Dict, none]  
-   Info to render the sender fields ([see bellow](#sender)).
+   Info to render the sender fields ([see below](#sender)).
  - `receiver` [Dict, none]   
-   Info to render the receive fields ([see bellow](#receiver)).
+   Info to render the receive fields ([see below](#receiver)).
  - `date_place` [Dict, String, none]
-   Info to render the `date_place` template ([see bellow](#date-place)).
+   Info to render the `date_place` template ([see below](#date-place)).
  - `title` [Dict, String, none]
-   Info to render the `title` template ([see bellow](#title)).
+   Info to render the `title` template ([see below](#title)).
  - `opening` [Dict, String, none]
-   Info to render the `title` template ([see bellow](#opening)).
+   Info to render the `title` template ([see below](#opening)).
  - `closing` [Dict, String, none]
-   Info to render the closing ([see bellow](#closing)).
+   Info to render the closing ([see below](#closing)).
  - `signature` [Dict, none]
-   Info to render the signature ([see bellow](#signature)).
+   Info to render the signature ([see below](#signature)).
  - `indicator_lines` [Dict, none]
-   Info to render lines for the hole puncher and folding ([see bellow](#indicator-lines)).
+   Info to render lines for the hole puncher and folding ([see below](#indicator-lines)).
 
 ## Settings
 
