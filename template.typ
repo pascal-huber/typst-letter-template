@@ -14,7 +14,6 @@
 
 #let lttr_defaults = (
     _page: (
-        paper: "a4",
         margin: (
             top: 3cm,
             bottom: 3cm,
@@ -39,6 +38,9 @@
         min_content_spacing: 100mm, // TODO: find a good value for min_content_spacing
         content_spacing: 8.46mm, // NOTE: DIN 5008 but okay for all 
         justify_content: true,
+    ),
+    sender: (
+        content: none,
     ),
     receiver: (
         remark_zone: none,
@@ -68,7 +70,33 @@
 )
 
 #let lttr_format_defaults = (
+    "custom": (
+        _page: (
+            paper: "a4",
+        ),
+        sender: (
+            position: (left: 125mm, top: 32mm),
+            width: 75mm,
+        ),
+        receiver: (
+            return_to_position: none,
+            remark_zone_position: none,
+            address_position: (left: 20mm + 5mm, top: 27mm + 17.7mm),
+            address_dimensions: (height: 27.3mm, width: 85mm),
+            address_align_v: top,
+        ),
+        indicator_lines: (
+            show_puncher_mark: false,
+            fold_marks: (),
+        ),
+        date_place: (
+            align: right,
+        )
+    ),
     "DIN-5008-A": (
+        _page: (
+            paper: "a4",
+        ),
         sender: (
             position: (left: 125mm, top: 32mm),
             width: 75mm,
@@ -84,7 +112,7 @@
             address_align_v: top,
         ),
         indicator_lines: (
-            show_puncher_mark: true,
+            show_puncher_mark: false,
             fold_marks: (87mm, 87mm+105mm),
         ),
         date_place: (
@@ -92,6 +120,9 @@
         )
     ),
     "DIN-5008-B": (
+        _page: (
+            paper: "a4",
+        ),
         sender: (
             position: (left: 125mm, top: 50mm),
             width: 75mm,
@@ -114,6 +145,9 @@
         )
     ),
     "C5-WINDOW-RIGHT": (
+        _page: (
+            paper: "a4",
+        ),
         sender: (
             position: none,
             width: 75mm, // TODO: is this okay, or 85mm?
@@ -232,10 +266,10 @@
             outset: 0cm,
             stroke: if state.debug {blue} else {none},
             {
-                if type(state.sender.content) == "content" {
-                    state.sender.content
-                } else {
+                if type(state.sender.content) == "array" {
                     state.sender.content.join(linebreak())
+                } else {
+                    state.sender.content
                 }
             }
         )
@@ -316,8 +350,10 @@
             inset: (left: 0mm, right: 0mm, top: 0mm),
             outset: 0pt,
             {
-                set align(state.receiver.address_align_v)
-                state.receiver.address.join(linebreak())
+                if state.receiver.address != none {
+                    set align(state.receiver.address_align_v)
+                    state.receiver.address.join(linebreak())
+                }
             },
         )
         place(
@@ -365,7 +401,7 @@
 
 #let lttr_init(
     debug: false,
-    format: "DIN-5008-B",
+    format: "custom",
     _page: (:),
     _text: (:),
     settings: (:),
@@ -392,6 +428,7 @@
         format: format,
         _page: (
             :..lttr_defaults._page,
+            ..format_defaults._page,
             .._page,
         ),
         _text: (
@@ -403,7 +440,8 @@
             ..settings,
         ),
         sender: (
-            :..format_defaults.sender,
+            :..lttr_defaults.sender,
+            ..format_defaults.sender,
             ..as_content_dict(sender),
         ),
         receiver: (

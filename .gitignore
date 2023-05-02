@@ -1,9 +1,1 @@
-*
-!preview.png
-!examples/
-!examples/*
-!.gitignore
-!README.md
-!example.pdf
-!example.typ
-!template.typ
+*.pdf

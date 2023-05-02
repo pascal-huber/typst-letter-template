@@ -4,7 +4,7 @@ A customizable Typst letter template with some presets for DIN 5008 A/B and
 Swiss C5 Letter.
 
 Please note that the template is still under development and subject to breaking
-changes.
+changes. 
 
 ![preview](./preview.png)
 
@@ -17,7 +17,7 @@ A letter should have the following form.
 #show: lttr_init.with(
     format: "DIN-5008-B",
     title: "Writing Letters in Typst is Easy",
-    opening: "Dear Sir or Madam,",
+    opening: "Dear Sir, Madam or Mother,",
     ...
 )
 
@@ -45,8 +45,8 @@ parameter dictionary.
 
  - `debug` [Bool] (default=false)  
    Whether or not to show the debug lines.
- - `format` [String] (default="DIN-5008-B") [REQUIRED]
-   Format of the letter. Must be one of "DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT".
+ - `format` [String] (default="custom")
+   Format of the letter ("DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT", "custom").
  - `_page` [Dict] (default=(:))  
    Overwrite page settings ([docs](https://typst.app/docs/reference/layout/page/)).
  - `_text` [Dict, none] (default=(:))  
