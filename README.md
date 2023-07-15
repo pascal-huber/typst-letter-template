@@ -57,17 +57,19 @@ parameter dictionary.
    Info to render the sender fields ([see below](#sender)).
  - `receiver` [Dict, none]   
    Info to render the receive fields ([see below](#receiver)).
- - `date_place` [Dict, String, none]
+ - `date_place` [Dict, String, none]   
    Info to render the `date_place` template ([see below](#date-place)).
- - `title` [Dict, String, none]
-   Info to render the `title` template ([see below](#title)).
- - `opening` [Dict, String, none]
+ - `title` [Dict, String, none]   
+   Info to render the `title` template ([see below](#title)). Also set as document property.
+ - `author` [String, Array, none]   
+   Author(s) of the letter in the document properties. If not specified, `signature` is used.
+ - `opening` [Dict, String, none]   
    Info to render the `title` template ([see below](#opening)).
- - `closing` [Dict, String, none]
+ - `closing` [Dict, String, none]   
    Info to render the closing ([see below](#closing)).
- - `signature` [Dict, none]
+ - `signature` [Dict, none]   
    Info to render the signature ([see below](#signature)).
- - `indicator_lines` [Dict, none]
+ - `indicator_lines` [Dict, none]   
    Info to render lines for the hole puncher and folding ([see below](#indicator-lines)).
 
 ## Settings
@@ -174,7 +176,7 @@ date_place: (
 
  - `spacing` [Length]  
    Spacing before the title.
- - `content` [Content]  
+ - `content` [String]  
    Content of the title.
 
 Example:
@@ -265,14 +267,18 @@ indicator_lines: (
    Links 
 
 
+# Test setup
+
+  mkdir -p ${XDG_DATA_HOME}/typst/local
+  ln -s path/to/this/repo ${XDG_DATA_HOME}/typst/local/lttr-0.1.0
+
 # TODO
- - [ ] Use document properties
- - [ ] Remove magic constants, add parameters
- - [ ] Add C5 Layout with window on the left side
- - [ ] Use datetime type (and today function) as soon as it exists
-   [PR](https://github.com/typst/typst/pull/435),
-   [discussion](https://github.com/typst/typst/issues/303),
-   [issue](https://github.com/typst/typst/issues/204)
- - [ ] Decide if rending return_to and remark_zone is okay for C5-WINDOW-RIGHT
- - [ ] Create an example with json/yaml data
- - [ ] Add locale and language defaults.
+
+There are a couple of limitations in typst which I hope will be addressed.
+
+ - [ ] there is currently no way to query properties set with `set`. This would
+   be nice to query the document title and author names
+   [issue](https://github.com/typst/typst/issues/763). Forthermore, it is not
+   possible to call `set` after the first lttr function has been called (even if
+   no content was rendered added). 
+ - [ ] datetime with locales settings

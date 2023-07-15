@@ -1,6 +1,11 @@
-#import "../template.typ": *
-#show: lttr_init.with(
+#import "@local/lttr:0.1.0": *
+
+#set document(
+    title: "asdf"
+)
+#show : lttr_init.with(
     debug: true,
+    // author: "asdf",
 )
 #show: lttr_preamble
 

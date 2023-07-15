@@ -1,4 +1,4 @@
-#import "../template.typ": *
+#import "@preview/lttr:0.1.0": *
 #show: lttr_init.with(
     format: "C5-WINDOW-RIGHT",
     title: "Writing Letters in Typst is Easy",
