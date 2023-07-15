@@ -12,6 +12,39 @@
     })
 }
 
+
+// NOTE: this is a workaround to format the
+// date because typst does not yet support
+// locale settings for dates
+#let lttr_month_de(month) = {
+    if month == 1 { "Januar" }
+    else if month == 2 { "Februar "}
+    else if month == 3 { "März "}
+    else if month == 4 { "April"}
+    else if month == 5 { "Mai"}
+    else if month == 6 { "Juni"}
+    else if month == 7 { "Juli"}
+    else if month == 8 { "August"}
+    else if month == 9 { "September"}
+    else if month == 10 { "Oktober"}
+    else if month == 11 { "November"}
+    else if month == 12 { "Dezember"}
+}
+#let lttr_local_today() = {
+    locate(loc => {
+        let state = lttr_data.at(loc);
+        let today = datetime.today()
+        if state._text == none or not state._text.keys().contains("lang") {
+            today.display("[month repr:long] [day padding:none], [year]")
+        } else if state._text.lang == "CH" or state._text.lang == "DE" {
+            let month = today.month()
+            today.display("[day padding:none]. ") + lttr_month_de(month) + today.display(" [year]")
+        } else {
+            today.display("[day].[month].[year]")
+        }
+    })
+}
+
 #let lttr_defaults = (
     _page: (
         margin: (
@@ -74,6 +107,7 @@
         _page: (
             paper: "a4",
         ),
+        _text: (:),
         sender: (
             position: (left: 125mm, top: 32mm),
             width: 75mm,
@@ -96,6 +130,9 @@
     "DIN-5008-A": (
         _page: (
             paper: "a4",
+        ),
+        _text: (
+            lang: "DE"
         ),
         sender: (
             position: (left: 125mm, top: 32mm),
@@ -123,6 +160,9 @@
         _page: (
             paper: "a4",
         ),
+        _text: (
+            lang: "DE"
+        ),
         sender: (
             position: (left: 125mm, top: 50mm),
             width: 75mm,
@@ -147,6 +187,9 @@
     "C5-WINDOW-RIGHT": (
         _page: (
             paper: "a4",
+        ),
+        _text: (
+            lang: "CH",
         ),
         sender: (
             position: none,
@@ -409,11 +452,12 @@
     sender: (:),
     receiver: (:),
     title: (:),
+    author: (), // empty array = no author
     date_place: (:),
     opening: (:),
     closing: (:),
     signature: (:),
-    body
+    body,
 ) = {
     let as_content_dict = (it) => {
         if type(it) == "string" or type(it) == "content" {
@@ -433,6 +477,7 @@
         ),
         _text: (
             :..lttr_defaults._text,
+            ..format_defaults._text,
             .._text,
         ),
         settings: (
@@ -458,6 +503,7 @@
             :..lttr_defaults.title,
             ..as_content_dict(title),
         )},
+        author: author,
         opening: if opening == none { none } else {(
             :..lttr_defaults.opening,
             ..as_content_dict(opening),
@@ -486,10 +532,11 @@
         }
         receiver.return_to = none
     }
-    // TODO: find out why moving set page causes a page break
-    set page(..data._page)
-    set text(..data._text)
+     // FIXME: find a better way to set document attributes
+     set page(..data._page)
+     set text(..data._text)
     lttr_data.update(x => data)
+
     style(styles => {
         lttr_update_max_dy(data.settings.min_content_spacing)
     })
