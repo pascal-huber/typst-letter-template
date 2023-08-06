@@ -1,5 +1,6 @@
 #import "@preview/lttr:0.1.0": *
 #show: lttr_init.with(
+    debug: true,
     format: "DIN-5008-A",
     title: "Writing Letters in Typst is Easy",
     settings: (
@@ -12,47 +13,36 @@
         date: "20.04.2023",
         place: "Weitfortistan",
     ),
-    receiver: (
-        return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
-        remark_zone: {
-            set text(fill: gray)
-            "Why would anyone write a gray remark?"
-            linebreak()
-            "...hideous..."
-        },
-        address: (
-            "Peter Empfänger",
-            "Bahnhofsstrasse 16",
-            "1234 Nochvielweiterwegstadt",
-        ),
+    horizontal_table: (
+        "Ihr Zeichen": "Bananalover149",
+        "Ihre Nachricht vom": "12.12.2022",
+        "Unser Zeichen": "BananaFactory",
+        "Datum": "06.08.2023",
     ),
-    sender: {
-        image("logo.png", width: 100%, fit: "contain")
-        h(2mm)
-        text("Hanspeter Müller")
-        linebreak()
-        h(2mm)
-        text("Sesamstrasse 15")
-        linebreak()
-        h(2mm)
-        text("1234 Einestadt")
-        linebreak()
-        h(2mm)
-        text("Weitfortistan")
-    },
+    return_to: "Bananas Ltd · Fruitstreet 15 · 1234 Monkey City · Gorillaland",
+    remark_zone: (
+        "Why would anyone write a remark?",
+        "...hideous...",
+    ),
+    receiver: (
+        "Peter Bananeater",
+        "Bahnhofsstrasse 16",
+        "1234 Fruchtstadt",
+        "Weitfortistan",
+    ),
+    sender: ([
+        #image("logo.png", width: 60%)
+        Bananas Ltd.\
+        Fruitstreet 15\
+        1234 Monkey City\
+        Gorillaland 
+    ]),
 )
 
 #show: lttr_preamble
 
 #lorem(50)
 
-```rust
-pub fn f(x: &mut i32) -> i32 {
-    3
-}
-```
-
-#lorem(80)
 #lorem(20)
 
 #show: lttr_closing
