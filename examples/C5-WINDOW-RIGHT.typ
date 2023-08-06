@@ -1,5 +1,6 @@
 #import "@preview/lttr:0.1.0": *
 #show: lttr_init.with(
+    debug: true,
     format: "C5-WINDOW-RIGHT",
     title: "Writing Letters in Typst is Easy",
     settings: (
@@ -12,14 +13,12 @@
         date: "20.04.2023",
         place: "Weitfortistan",
     ),
+    // return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
+    // remark_zone: "remark",
     receiver: (
-        return_to: "Banana AG · Sesamstrasse 15 · 1234 Berlin",
-        remark_zone: "remark",
-        address: (
-            "Peter Empfänger",
-            "Bahnhofsstrasse 16",
-            "1234 Nochvielweiterwegstadt",
-        ),
+        "Peter Empfänger",
+        "Bahnhofsstrasse 16",
+        "1234 Nochvielweiterwegstadt",
     ),
     sender: {
         image("logo.png", width: 100%, fit: "contain")

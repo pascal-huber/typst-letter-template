@@ -1,4 +1,4 @@
-#import "@local/lttr:0.1.0": *
+#import "@preview/lttr:0.1.0": *
 
 #set document(
     title: "asdf"
