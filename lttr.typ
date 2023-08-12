@@ -57,9 +57,6 @@
     return result
 }
 
-// formatting of different types
-// - arrays get formatted "line by line"
-// - the rest gets formatted by typst
 #let lttr_fmt(it, body) = {
     if type(it) == "array" {
         let ctr = 0
@@ -99,7 +96,7 @@
         size: 11pt,
     ),
     settings: (
-        // NOTE: this is a DIN 5008 (but okay for all)
+        // NOTE: this is a DIN 5008 setting (but okay for all)
         min_content_spacing: 90mm, 
         content_spacing: 8.46mm, 
         justify_content: true,
@@ -155,10 +152,6 @@
     title: (
         content: none,
         spacing: 2mm,
-        // fmt: (it, body) => {
-        //     show: lttr_fmt.with(it)
-        //     body
-        // },
     ),
     opening: (
         spacing: 2mm,
