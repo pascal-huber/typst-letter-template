@@ -192,7 +192,7 @@
         receiver: (
             position: (left: 20mm + 5mm, top: 27mm + 17.7mm),
             dimensions: (height: 27.3mm, width: 85mm),
-            align_v: top,
+            align: top,
         ),
         indicator_lines: (
             show_puncher_mark: false,
@@ -229,7 +229,7 @@
         receiver: (
             position: (left: 20mm + 5mm, top: 45mm + 17.7mm),
             dimensions: (height: 27.3mm, width: 85mm),
-            align_v: top,
+            align: top,
         ),
         indicator_lines: (
             show_puncher_mark: true,
@@ -257,14 +257,13 @@
             position: none,
         ),
         receiver: (
+            align: horizon,
             position: (left: 120mm, top: 50mm),
             dimensions: (height: 30mm, width: 75mm),
-            align_v: horizon,
         ),
         indicator_lines: (
-            show_puncher_mark: true,
-            // TODO: remove?
             fold_marks: (),
+            show_puncher_mark: true,
         ),
         date_place: (
             align: left,
