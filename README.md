@@ -317,3 +317,4 @@ There are a couple of limitations in typst which I hope will be addressed.
   possible to call `set` after the first lttr function has been called (even if
   no content was rendered added). 
 - [ ] datetime with locales settings
+- [ ] Add this to preview packages if anyone is interested
