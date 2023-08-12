@@ -92,7 +92,7 @@
         numbering: "1/1",
     ),
     _text: (
-        font: "Helvetica", 
+        font: "Monospace", 
         size: 11pt,
     ),
     settings: (
@@ -142,10 +142,11 @@
     horizontal_table: (
         content: none,
         fmt: (entry, body) => {
+            set par(leading: 0.4em)
             text(size: 0.8em)[
                 #show: lttr_fmt.with(entry.first())
+                #linebreak()
             ]
-            linebreak()
             show: lttr_fmt.with(entry.last())
             body
         },
