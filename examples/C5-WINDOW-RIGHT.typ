@@ -1,4 +1,4 @@
-#import "@preview/lttr:0.1.0": *
+#import "@local/lttr:0.1.0": *
 #show: lttr_init.with(
     debug: true,
     format: "C5-WINDOW-RIGHT",

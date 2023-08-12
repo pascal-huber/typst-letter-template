@@ -302,10 +302,10 @@ directly or use a dict if other settings need to be changed also. For example:
 
 ## Test setup
 
-TODO: make test setup better
-
-  mkdir -p ${XDG_DATA_HOME}/typst/preview
-  ln -s path/to/this/repo ${XDG_DATA_HOME}/typst/preview/lttr-0.1.0
+```bash
+mkdir -p ${XDG_DATA_HOME}/typst/packages/local
+ln -s ~/git/typst-lttr ${XDG_DATA_HOME}/typst/packages/local/lttr-0.1.0
+```
 
 ## TODO
 
