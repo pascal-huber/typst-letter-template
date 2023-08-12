@@ -101,14 +101,16 @@ directly or use a dict if other settings need to be changed also. For example:
 
 - `receiver` [Dict, Content]   
    Info to render the receiver fields.
-  - `position` [Dict]  
-    Position of the address field (`top: [Length]`, `left: [Length]`)
-  - `dimensions` [Dict]  
-    Dimensions of the address field (`width: [Length]`, `height: [Length]`)
   - `content` [Array, Content, String]  
     Content of the receiver field.
+  - `dimensions` [Dict]  
+    Dimensions of the address field (`width: [Length]`, `height: [Length]`)
   - `fmt` [Function]  
     Rendering function which takes this entire item to format and show it.
+  - `position` [Dict]  
+    Position of the address field (`top: [Length]`, `left: [Length]`)
+  - `spacing` [Length]  
+   Spacing before the content.
 
   Example:
 

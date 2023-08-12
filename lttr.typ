@@ -133,10 +133,11 @@
             show: lttr_fmt.with(it.content)
             body
         },
+        spacing: 3pt, // NOTE: visually nicer
     ),
     date_place: (
-        place: none,
         date: none,
+        place: none,
     ),
     horizontal_table: (
         content: none,
@@ -154,16 +155,16 @@
         spacing: 2mm,
     ),
     opening: (
-        spacing: 2mm,
         content: none,
+        spacing: 2mm,
     ),
     closing: (
-        spacing: 5mm,
         content: none,
+        spacing: 5mm,
     ),
     signature: (
-        spacing: 5mm,
         content: none,
+        spacing: 5mm,
     )
 )
 
@@ -213,8 +214,12 @@
             width: 75mm,
         ),
         return_to: (
-            position: none,
-            dimensions: none,
+            // NOTE: this position overlapps with remark_zone DIN-5008-B does
+            //   not have a dedicated return_to field. If both return_to and
+            //   remark_zone have a non-none content, then the remark_zone field
+            //   has to be recuced by return_to.dimensions.height
+            position: (left: 20mm + 5mm, top: 45mm),
+            dimensions: (height: 5mm, width: 85mm),
         ),
         remark_zone: (
             position: (left: 20mm + 5mm, top: 45mm),
@@ -399,8 +404,8 @@
         let state = lttr_data.at(loc);
         let sender_rect = rect(
             width: state.sender.width,
-            inset: 0cm,
-            outset: 0cm,
+            inset: 0pt,
+            outset: 0pt,
             stroke: if state.debug {blue} else {none},
             {
                 show: state.sender.fmt.with(state.sender)
@@ -485,6 +490,7 @@
             inset: (left: 0mm, right: 0mm, top: 0mm),
             outset: 0pt,
             {
+                v(state.receiver.spacing)
                 show: state.receiver.fmt.with(state.receiver)
             },
         )
@@ -643,16 +649,17 @@
         },
     )
 
-    // FIXME: find a better way to deal with return_to for DIN-5008-B
-    // merge return_to into remark_zone
-    if data.return_to.position == none and data.return_to.content != none {
-        data.remark_zone.content = {
-            {
-                // TODO: fix this
-                set text(size: 1.25em)
-                show: data.return_to.fmt.with(data.return_to)
-                show: data.remark_zone.fmt.with(data.remark_zone)
-            }
+    // NOTE: This is a special case for DIN-5008-B as described in the format
+    // defaults
+    if data.format == "DIN-5008-B" {
+        if data.return_to.content != none and data.remark_zone.content != none {
+            // we have both return_to and remark_zone, reduce the size of
+            // remark_zone and shift it down
+            data.remark_zone.dimensions.height = data.remark_zone.dimensions.height - data.return_to.dimensions.height
+            data.remark_zone.position.top = data.remark_zone.position.top + data.return_to.dimensions.height
+        } else if  data.return_to.content != none {
+            // there is no remark_zone, shift the return_to down
+            data.return_to.position.top = data.receiver.position.top - data.return_to.dimensions.height
         }
     }
 

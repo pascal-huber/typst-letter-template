@@ -1,6 +1,6 @@
 #import "@preview/lttr:0.1.0": *
 #show : lttr_init.with(
-    debug: true,
+    debug: false,
     format: "DIN-5008-B",
     title: "Banana Order Confirmation",
     opening: "Dear Peter,",
@@ -22,7 +22,11 @@
     ),
     // NOTE: DIN-5008-B specifies no specific return_to -> it will be merged into remark_zone
     return_to: "Bananas Ltd · Fruitstreet 15 · 1234 Monkey City · Gorillaland",
-    remark_zone: "hello world",
+    // remark_zone: (
+    //     "hello world",
+    //     "hello none",
+    //     "hello world",
+    // ),
     receiver: (
         "Peter Bananaeater",
         "Bahnhofsstrasse 16",
@@ -47,3 +51,5 @@
 #lorem(100)
 
 #show: lttr_closing
+
+#lttr_state()
