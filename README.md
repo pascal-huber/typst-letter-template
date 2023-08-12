@@ -35,32 +35,34 @@ Your letter content.
   attributes.
 
 - `lttr_preamble` renders `lttr_sender`, `lttr_receiver`,
-  `lttr_indicator_lines`, `lttr_content_offset`, `lttr_attrs`,
+  `lttr_indicator_lines`, `lttr_content_offset`, `lttr_horizontal_table`,
   `lttr_date_place`, `lttr_title` and `lttr_opening`. You can also call them
    seperately.
 
 - `lttr_closing` renders the closing line and the signature.
 
-# Prameters
+# Parameters
 
 All Parameters are optional and will override the global defaults and the
-defaults of the chosen format. 
+defaults of the chosen format. Some of them allow to either specify the content
+directly or use a dict if other settings need to be changed also. For example:
+`receiver: "x"` is the same as `receiver: (content: "x")`.
 
 ## Basics (Overview)
 
-- `debug` [Bool] (default=false)   
+- `debug` [Bool] (default=false)  
   Whether or not to show (colorful) debug lines.
 
-- `format` [String] (default="custom")   
+- `format` [String] (default="custom")  
   Format of the letter ("DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT").
 
-- `_page` [Dict] (default=(:))   
+- `_page` [Dict] (default=(:))  
   Set page settings ([docs](https://typst.app/docs/reference/layout/page/)).
 
-- `_text` [Dict, none] (default=(:))   
+- `_text` [Dict, none] (default=(:))  
   Set text settings ([docs](https://typst.app/docs/reference/text/text/)).
 
-- `settings` [Dict, none]   
+- `settings` [Dict, none]  
   Basic settings.
   - `min_content_spacing` [Length]  
     Minimum space between top margin and beginning of the letter content.
@@ -79,7 +81,7 @@ defaults of the chosen format.
   ),
   ```
 
-- `indicator_lines` [Dict, none]   
+- `indicator_lines` [Dict]  
   Info to render lines for the hole puncher and folding ([see below](#indicator-lines)).
   - `show_puncher_mark` [Bool]  
      Wheter or not to show the puncher mark.
@@ -95,28 +97,33 @@ defaults of the chosen format.
   )
   ```
 
-## Sender and Receiver (Overview)
+## Sender and Receiver
 
-- `receiver` [Dict, Array, Content]   
+- `receiver` [Dict, Content]   
    Info to render the receiver fields.
   - `position` [Dict]  
-    Position of the address field (`top: [Length]`, `left: [Length]`) 
+    Position of the address field (`top: [Length]`, `left: [Length]`)
   - `dimensions` [Dict]  
     Dimensions of the address field (`width: [Length]`, `height: [Length]`)
   - `content` [Array, Content, String]  
     Content of the receiver field.
+  - `fmt` [Function]  
+    Rendering function which takes this entire item to format and show it.
 
   Example:
 
   ```typst
   receiver: (
-    "Peter Doe",
-    "Somestreet 16",
-    "1234 New York",
+    position: (top: 5cm)
+    content: (
+      "Peter Doe",
+      "Somestreet 16",
+      "1234 New York",
+    ),
   ),
   ```
 
-- `return_to` [Dict, Array, Content]   
+- `return_to` [Dict, Array, Content]  
    The returning address.
   - `position` [Dict]  
     Position of the return_to field (`top: [Length]`, `left: [Length]`) 
@@ -124,6 +131,8 @@ defaults of the chosen format.
     Dimensions of the return_to field (`width: [Length]`, `height: [Length]`)
   - `content` [Array, Content, String]  
     Content of the return_to field.
+  - `fmt` [Function]  
+    Rendering function which takes this entire item to format and show it.
 
   Example:
 
@@ -141,6 +150,8 @@ defaults of the chosen format.
     Alignment of the remark_zone.
   - `content` [Array, Content, String]  
     Content of the remark_zone field.
+  - `fmt` [Function]  
+    Rendering function which takes this entire item to format and show it.
 
   ```typst
   remark_zone: (
@@ -157,6 +168,8 @@ defaults of the chosen format.
     Position of the sender field.
   - `width` [Length]  
     Width of the sender field.
+  - `fmt` [Function]  
+    Rendering function which takes this entire item to format and show it.
 
   Example:
 
@@ -171,6 +184,25 @@ defaults of the chosen format.
     width: 80mm,
   ),
   ```
+
+- `horizontal_table` [Dict, Array]
+  A table to add before the date, time and title.
+  - `content` [Array]  
+    Array of of entries for the table. 
+  - `fmt` [Function]  
+    Formatting function which takes an array of form `(title, content)`.
+
+  Example:
+
+  ```typst
+  horizontal_table: (
+    ("Ihr Zeichen", "Bananalover149"),
+    ("Ihre Nachricht vom", "12.12.2022"),
+    ("Unser Zeichen", "Bananenfabrik"),
+    ("Datum", "12.08.2023"),
+  )
+  ```
+
 
 ## Letter Beginning (Overview)
 
