@@ -81,14 +81,6 @@
             left: 25mm,
             right: 20mm,
         ),
-        header: {
-            locate(loc => if loc.page() != 1 {
-                let state = lttr_data.at(loc);
-                set text(size: 0.9em, fill: rgb("#777777"))
-                state.title.content
-                line(length: 100%, stroke: 1pt + rgb("#777777"))
-            })
-        },
         numbering: "1/1",
     ),
     _text: (
