@@ -14,10 +14,10 @@
         place: "Weitfortistan",
     ),
     horizontal_table: (
-        "Ihr Zeichen": "Bananalover149",
-        "Ihre Nachricht vom": "12.12.2022",
-        "Unser Zeichen": "BananaFactory",
-        "Datum": "06.08.2023",
+        ("Ihr Zeichen", "Bananalover149"),
+        ("Ihre Nachricht vom", "12.12.2022"),
+        ("Unser Zeichen", "BananaFactory"),
+        ("Datum", "06.08.2023"),
     ),
     return_to: "Bananas Ltd · Fruitstreet 15 · 1234 Monkey City · Gorillaland",
     remark_zone: (
