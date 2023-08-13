@@ -8,16 +8,16 @@
     signature: "Hansli",
     author: "Bananas Ltd.",
     horizontal_table: (
-        ("Ihr Zeichen", "Bananalover149"),
+        ("Ihr Zeichen", "Banana"),
         ("Ihre Nachricht vom", "12.12.2022"),
         ("Unser Zeichen", "BananaFactory"),
-        ("Datum", "06.08.2023"),
+        ("Datum", "06.08.2023")
     ),
     date_place: (
         date: "20.04.2023",
         place: "Monkey City",
     ),
-    return_to: "Bananas Ltd · Fruitstreet 15 · 1234 Monkey City · Gorillaland",
+    return_to: "Bananas Ltd · Fruitstreet 15 · 1234 Monkey City",
     receiver: (
         "Peter Bananaeater",
         "Bahnhofsstrasse 16",

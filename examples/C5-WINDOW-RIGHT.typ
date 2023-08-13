@@ -40,12 +40,6 @@
 
 #lorem(50)
 
-```rust
-pub fn f(x: &mut i32) -> i32 {
-    3
-}
-```
-
 #lorem(80)
 #lorem(20)
 

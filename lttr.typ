@@ -21,7 +21,7 @@
         return dictionaries.first()
     }
 
-    // helper function to merge d1 into d2 (d2 overwrites d1)
+    // helper function to deeply merge d1 and d2 (d2 overwrites d1)
     let deep_merge(d1, d2) = {
         let keys = (
             ..d1.keys(),
@@ -46,9 +46,7 @@
 
     let result = none
     for dict in dictionaries {
-        if type(dict) != "dictionary" {
-            // error
-        } else if result == none {
+        if result == none {
             result = dict
         } else {
             result = deep_merge(result, dict)
@@ -84,12 +82,11 @@
         numbering: "1/1",
     ),
     _text: (
-        font: "Monospace", 
         size: 11pt,
     ),
     settings: (
         // NOTE: this is a DIN 5008 setting (but okay for all)
-        min_content_spacing: 90mm, 
+        min_content_offset: 90mm,
         content_spacing: 8.46mm, 
         justify_content: true,
     ),
@@ -125,7 +122,7 @@
             show: lttr_fmt.with(it.content)
             body
         },
-        spacing: 3pt, // NOTE: visually nicer
+        spacing: 0.65em / 2, // NOTE: half the default spacing between lines
     ),
     date_place: (
         date: none,
@@ -142,6 +139,7 @@
             show: lttr_fmt.with(entry.last())
             body
         },
+        spacing: 8.46mm // NOTE: like DIN-5008-B spacing
     ),
     title: (
         content: none,
@@ -296,42 +294,55 @@
 }
 
 #let lttr_horizontal_table(
-    attrs: (:),
-    fmt: none,
     body
 ) = {
     locate(loc => {
         let state = lttr_data.at(loc);
-        // let attrs = if attrs.keys().len() != 0 {attrs} else {state.horizontal_table.content}
-        let attrs = state.horizontal_table
-        if attrs.content != none {
+        if state.horizontal_table.content != none {
             let content = ()
             let ctr = 0
-            for entry in attrs.content {
+            for entry in state.horizontal_table.content {
                 ctr += 1
-                content.push([
-                    #show: state.horizontal_table.fmt.with(entry)
-                ])
+                content.push({
+                    show: state.horizontal_table.fmt.with(entry)
+                })
             }
             if ctr > 0 {
-                // TODO: is there a nicer way to do this like `repeat(100% / ctr, ctr)`?
                 let column_width = 100% / ctr
                 let columns = ()
                 while ctr > 0 {
                     columns.push(column_width)
                     ctr -= 1
                 }
-                table(
+                let tbl = table(
                     columns: columns,
                     inset: 0pt,
                     stroke: if state.debug {red} else {none},
                     align: (left, top),
                     ..content
                 )
+                let table_rect = rect(
+                    outset: 0pt,
+                    inset: 0pt,
+                    tbl
+                )
+                let dy = lttr_max_dy.at(loc) + state.horizontal_table.spacing
+                place(
+                    dy: dy,
+                    {
+                        table_rect
+                        layout(size => style(styles => {
+                            let (height,) = measure(
+                                block(width: size.width, table_rect),
+                                styles
+                            )
+                            lttr_update_max_dy(height + dy)
+                        }))
+                    }
+                )
             }
         }
     })
-    v(2em)
     body
 }
 
@@ -416,7 +427,7 @@
             sender_rect
         )
         style(styles => {
-            lttr_update_max_dy(measure(sender_rect, styles).height + sender_position.top)
+            lttr_update_max_dy(measure(sender_rect, styles).height + dy)
         })
     })
     body
@@ -496,7 +507,7 @@
         style(styles => {
             lttr_update_max_dy(
                 measure(receiver_rect, styles).height
-                 + state.receiver.position.top
+                 + dy
                 )
         })
     })
@@ -513,7 +524,7 @@
 #let lttr_content_offset(body) = {
     locate(loc => {
         let state = lttr_data.at(loc);
-        v(lttr_max_dy.at(loc) - state._page.margin.top + state.settings.content_spacing)
+        v(lttr_max_dy.at(loc) + state.settings.content_spacing)
         set par(justify: state.settings.justify_content)
         body
     })
@@ -522,9 +533,9 @@
 #let lttr_preamble(body) = {
     show: lttr_sender
     show: lttr_receiver
+    show: lttr_horizontal_table
     show: lttr_indicator_lines
     show: lttr_content_offset
-    show: lttr_horizontal_table
     show: lttr_date_place
     show: lttr_title
     show: lttr_opening
@@ -566,7 +577,7 @@
         _page: lttr_deep_dict_merge((
             lttr_defaults._page,
             format_defaults._page,
-            page,
+            _page,
         )),
         _text: lttr_deep_dict_merge((
             lttr_defaults._text,
@@ -655,13 +666,15 @@
         }
     }
 
-    // FIXME: find a better way to set document attributes
+    // FIXME: find a better way to (not) set document attributes
     set page(..data._page)
     set text(..data._text)
     lttr_data.update(x => data)
 
     style(styles => {
-        lttr_update_max_dy(data.settings.min_content_spacing)
+        lttr_update_max_dy(
+            data.settings.min_content_offset - data._page.margin.top
+        )
     })
     body
 }

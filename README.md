@@ -53,14 +53,14 @@ directly or use a dict if other settings need to be changed also. For example:
     Minimum spacing between sender/receiver and letter content.
   - `justify_content` [Bool]  
     Wheter or not to justify the content.
-  - `min_content_spacing` [Length]  
-    Minimum space between top margin and beginning of the letter content.
+  - `min_content_offset` [Length]  
+    Minimum space between top of the paper and beginning of the letter content.
 
   Example:
 
   ```typst
   settings: (
-    min_content_spacing: 100mm,
+    min_content_offset: 100mm,
     content_spacing: 8.46mm,
     justify_content: true,
   ),
@@ -180,6 +180,8 @@ directly or use a dict if other settings need to be changed also. For example:
     Array of of entries for the table.
   - `fmt` [Function]  
     Formatting function which takes an array of form `(title, content)`.
+  - `spacing` [Length]  
+    Spacing before the table.
 
   Example:
 
@@ -317,4 +319,14 @@ There are a couple of limitations in typst which I hope will be addressed.
   possible to call `set` after the first lttr function has been called (even if
   no content was rendered added). 
 - [ ] datetime with locales settings
-- [ ] Add this to preview packages if anyone is interested
+
+Other things:
+
+- [ ] Add  more  layouts including (`C5-WINDOW-LEFT`, us, ...)
+- [ ] Vertical table for sender field as for example
+  [here](https://www.onlineprinters.de/magazin/wp-content/uploads/2021/07/Vorlage_Geschaeftsbrief_DIN-5008_Form-A.jpg)
+- [ ] Maybe add lines with labels to display measurements/sizes in debug mode
+- [ ] Refactoring
+- [ ] Cleanup README.md
+- [ ] Add this to the typst preview packages. Currently, they apparently do not
+  accept packages.
