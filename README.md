@@ -302,12 +302,22 @@ directly or use a dict if other settings need to be changed also. For example:
 - [qjcq/awesome-typst](https://github.com/qjcg/awesome-typst): Awesome Typst
   Links
 
-## Test setup
+## Development Setup
+
+Currently, I just create a symlink such that I can import it with `#import
+"@local/lttr:0.1.0": *` as follows.
 
 ```bash
-mkdir -p ${XDG_DATA_HOME}/typst/packages/local
-ln -s ~/git/typst-lttr ${XDG_DATA_HOME}/typst/packages/local/lttr-0.1.0
+mkdir -p ${XDG_DATA_HOME}/typst/packages/local/lttr/
+ln -s /path/to/this/repo ${XDG_DATA_HOME}/typst/packages/local/lttr/0.1.0
 ```
+
+## Installation
+
+While there exists a first version of typst packages, they do not yet accept
+custom templates (afaik). For the meantime, you can download and extract the
+release tarball to `${XDG_DATA_HOME}/typst/packages/local/lttr/<version>` and
+import it as described in [Development Setup](#development-setup).
 
 ## TODO
 
