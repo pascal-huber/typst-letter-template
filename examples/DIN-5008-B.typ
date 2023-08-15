@@ -8,10 +8,20 @@
     signature: "Hansli",
     author: "Bananas Ltd.",
     horizontal_table: (
-        ("Ihr Zeichen", "Banana"),
-        ("Ihre Nachricht vom", "12.12.2022"),
-        ("Unser Zeichen", "BananaFactory"),
-        ("Datum", "06.08.2023")
+        // NOTE: we can override the default fmt to format the table entries
+        fmt: (header, content) => [
+            #text(fill: gray)[
+                #underline[#header]
+            ]
+            #linebreak()
+            #content
+        ],
+        content: (
+            ("Ihr Zeichen", "Banana"),
+            ("Ihre Nachricht vom", "12.12.2022"),
+            ("Unser Zeichen", "BananaFactory"),
+            ("Datum", "06.08.2023")
+        )
     ),
     date_place: (
         date: "20.04.2023",

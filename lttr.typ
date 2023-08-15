@@ -55,11 +55,11 @@
     return result
 }
 
-#let lttr_fmt(it, body) = {
+#let lttr_fmt(it) = {
     if type(it) == "array" {
         let ctr = 0
         for line in it {
-            show: lttr_fmt.with(line)
+            lttr_fmt(line)
             if ctr != it.len() {
                 linebreak()
             }
@@ -68,7 +68,6 @@
     } else {
         [#it]
     }
-    body
 }
 
 #let lttr_defaults = (
@@ -92,35 +91,31 @@
     ),
     sender: (
         content: none,
-        fmt: (it, body) => {
-            show: lttr_fmt.with(it.content)
-            body
+        fmt: (it) => {
+            lttr_fmt(it.content)
         },
     ),
     return_to: (
         content: none,
-        fmt: (it, body) => {
+        fmt: (it) => {
             text(size: 0.8em)[#underline({
-                show: lttr_fmt.with(it.content)
+                lttr_fmt(it.content)
             })]
-            body
         },
     ),
     remark_zone: (
         content: none,
-        fmt: (it, body) => {
+        fmt: (it) => {
             set align(it.align)
             text(size: 0.8em)[
-                #show: lttr_fmt.with(it.content)
+                lttr_fmt(it.content)
             ]
-            body
         },
     ),
     receiver: (
         content: none,
-        fmt: (it, body) => {
-            show: lttr_fmt.with(it.content)
-            body
+        fmt: (it) => {
+            lttr_fmt(it.content)
         },
         spacing: 0.65em / 2, // NOTE: half the default spacing between lines
     ),
@@ -130,14 +125,13 @@
     ),
     horizontal_table: (
         content: none,
-        fmt: (entry, body) => {
+        fmt: (header, content) => {
             set par(leading: 0.4em)
             text(size: 0.8em)[
-                #show: lttr_fmt.with(entry.first())
+                #lttr_fmt(header)
                 #linebreak()
             ]
-            show: lttr_fmt.with(entry.last())
-            body
+            lttr_fmt(content)
         },
         spacing: 8.46mm // NOTE: like DIN-5008-B spacing
     ),
@@ -304,7 +298,10 @@
             for entry in state.horizontal_table.content {
                 ctr += 1
                 content.push({
-                    show: state.horizontal_table.fmt.with(entry)
+                    state.horizontal_table.at("fmt")(
+                        entry.first(),
+                        entry.last(),
+                    )
                 })
             }
             if ctr > 0 {
@@ -411,7 +408,7 @@
             outset: 0pt,
             stroke: if state.debug {blue} else {none},
             {
-                show: state.sender.fmt.with(state.sender)
+                state.sender.at("fmt")(state.sender)
             }
         )
         let sender_position = if state.sender.position != none {
@@ -448,9 +445,9 @@
                     stroke: if state.debug {red} else {none},
                     inset: (left: 0mm, right: 0mm),
                     outset: 0cm,
-                    [
-                        #show: state.return_to.fmt.with(state.return_to)
-                    ]
+                    {
+                        state.return_to.at("fmt")(state.return_to)
+                    }
                 )
             )
         }
@@ -473,9 +470,9 @@
                     stroke: if state.debug {green} else {none},
                     inset: (left: 0mm, right: 0mm),
                     outset: 0pt,
-                    [
-                        #show: state.remark_zone.fmt.with(state.remark_zone)
-                    ]
+                    {
+                        state.remark_zone.at("fmt")(state.remark_zone)
+                    }
                 )
             )
         }
@@ -494,7 +491,7 @@
             outset: 0pt,
             {
                 v(state.receiver.spacing)
-                show: state.receiver.fmt.with(state.receiver)
+                state.receiver.at("fmt")(state.receiver)
             },
         )
         let dy = state.receiver.position.top - state._page.margin.top
