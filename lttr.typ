@@ -108,7 +108,7 @@
         fmt: (it) => {
             set align(it.align)
             text(size: 0.8em)[
-                lttr_fmt(it.content)
+                #lttr_fmt(it.content)
             ]
         },
     ),
@@ -167,16 +167,17 @@
         ),
         return_to: (
             position: (left: 20mm + 5mm, top: 27mm),
-            dimensions: (height: 5mm, width: 85mm),
+            dimensions: (height: 5mm, width: 85mm - 5mm),
         ),
         remark_zone: (
             position: (left: 20mm + 5mm, top: 27mm + 5mm),
-            dimensions: (height: 12.7mm, width: 85mm),
+            dimensions: (height: 12.7mm, width: 85mm - 5mm),
             align: top,
         ),
         receiver: (
+            // NOTE: I added the 5mm "padding" on the left here
             position: (left: 20mm + 5mm, top: 27mm + 17.7mm),
-            dimensions: (height: 27.3mm, width: 85mm),
+            dimensions: (height: 27.3mm, width: 85mm - 5mm),
             align: top,
         ),
         indicator_lines: (
@@ -204,16 +205,17 @@
             //   remark_zone have a non-none content, then the remark_zone field
             //   has to be recuced by return_to.dimensions.height
             position: (left: 20mm + 5mm, top: 45mm),
-            dimensions: (height: 5mm, width: 85mm),
+            dimensions: (height: 5mm, width: 85mm - 5mm),
         ),
         remark_zone: (
             position: (left: 20mm + 5mm, top: 45mm),
-            dimensions: (height: 12.7mm + 5mm, width: 85mm),
+            dimensions: (height: 12.7mm + 5mm, width: 85mm - 5mm),
             align: bottom,
         ),
         receiver: (
+            // NOTE: I added the 5mm "padding" on the left here
             position: (left: 20mm + 5mm, top: 45mm + 17.7mm),
-            dimensions: (height: 27.3mm, width: 85mm),
+            dimensions: (height: 27.3mm, width: 85mm - 5mm),
             align: top,
         ),
         indicator_lines: (
@@ -232,7 +234,7 @@
             lang: "CH",
         ),
         sender: (
-            position: none,
+            position: none, // none = page margins
             width: 75mm, // TODO: is this okay, or 85mm?
         ),
         return_to: (
