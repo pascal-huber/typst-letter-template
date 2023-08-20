@@ -39,7 +39,8 @@ directly or use a dict if other settings need to be changed also. For example:
   Whether or not to show (colorful) debug lines.
 
 - `format` [String] (default="custom")  
-  Format of the letter ("DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT").
+  Format of the letter ("DIN-5008-A", "DIN-5008-B", "C5-WINDOW-RIGHT",
+  "C5-WINDOW-LEFT").
 
 - `_page` [Dict] (default=(:))  
   Set page settings ([docs](https://typst.app/docs/reference/layout/page/)).

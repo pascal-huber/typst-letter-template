@@ -10,7 +10,7 @@
     horizontal_table: (
         // NOTE: we can override the default fmt to format the table entries
         fmt: (header, content) => [
-            #text(fill: gray)[
+            #text(fill: green, size: 0.8em)[
                 #underline[#header]
             ]
             #linebreak()

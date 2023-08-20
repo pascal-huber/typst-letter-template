@@ -1,8 +1,8 @@
 // NOTE: lttr_data contains all the data to render the letter
 #let lttr_data = state("letter", none)
 
-// NOTE: lttr_max_dy keeps track of the largest offset dy (from the top margin) of
-//   absolutely positioned content (sender and receiver fields) such that we
+// NOTE: lttr_max_dy keeps track of the largest offset dy (from the top margin)
+//   of absolutely positioned content (sender and receiver fields) such that we
 //   know how much vertical offset we need to add at the beginning of the letter
 //   content
 #let lttr_max_dy = state("lttr_max_dy", 0cm)
@@ -175,7 +175,6 @@
             align: top,
         ),
         receiver: (
-            // NOTE: I added the 5mm "padding" on the left here
             position: (left: 20mm + 5mm, top: 27mm + 17.7mm),
             dimensions: (height: 27.3mm, width: 85mm - 5mm),
             align: top,
@@ -226,7 +225,7 @@
             align: right,
         )
     ),
-    "C5-WINDOW-RIGHT": (
+    "C5-WINDOW-LEFT": (
         _page: (
             paper: "a4",
         ),
@@ -234,8 +233,10 @@
             lang: "CH",
         ),
         sender: (
-            position: none, // none = page margins
-            width: 75mm, // TODO: is this okay, or 85mm?
+            // NOTE: position.top is the margin.top
+            // NOTE: position.left and width are like DIN5008
+            position: (left: 125mm, top: 30mm),
+            width: 75mm,
         ),
         return_to: (
             position: none,
@@ -244,9 +245,48 @@
             position: none,
         ),
         receiver: (
+            // NOTE: I added a 5mm "padding" on the left here
+            position: (left: 20mm + 5mm, top: 52mm),
+            // NOTE: height = Window_height - (C5_height - Paper_height)
+            //              = 45mm - (162mm - 148.5mm)
+            //              = 31.5mm
+            //              rounded down to 31mm
+            // NOTE: width = Window_width - (C5_width - Paper_width)
+            //              = 100mm - (229mm - 210mm)
+            //              = 81mm
+            //              roundend down to 80mm
+            dimensions: (height: 31mm, width: 80mm),
             align: horizon,
+        ),
+        indicator_lines: (
+            fold_marks: (),
+            show_puncher_mark: true,
+        ),
+        date_place: (
+            align: left,
+        )
+    ),
+    "C5-WINDOW-RIGHT": (
+        _page: (
+            paper: "a4",
+        ),
+        _text: (
+            lang: "CH",
+        ),
+        sender: (
+            position: none,
+            width: 75mm,
+        ),
+        return_to: (
+            position: none,
+        ),
+        remark_zone: (
+            position: none,
+        ),
+        receiver: (
             position: (left: 120mm, top: 50mm),
-            dimensions: (height: 30mm, width: 75mm),
+            dimensions: (height: 30mm, width: 80mm),
+            align: horizon,
         ),
         indicator_lines: (
             fold_marks: (),
@@ -492,6 +532,7 @@
             inset: (left: 0mm, right: 0mm, top: 0mm),
             outset: 0pt,
             {
+                set align(state.receiver.align)
                 v(state.receiver.spacing)
                 state.receiver.at("fmt")(state.receiver)
             },
