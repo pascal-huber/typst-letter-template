@@ -79,7 +79,6 @@
             left: 25mm,
             right: 20mm,
         ),
-        numbering: "1/1",
     ),
     _text: (
         size: 11pt,
