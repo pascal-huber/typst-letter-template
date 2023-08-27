@@ -13,49 +13,6 @@
     })
 }
 
-// Takes an array of dictionaries and merges them where later dictionaries
-// overwrite the values of the ones before
-#let lttr_deep_dict_merge(dictionaries) = {
-    if dictionaries.len() == 0 {
-        return (:)
-    } else if dictionaries.len() == 1 {
-        return dictionaries.first()
-    }
-
-    // helper function to deeply merge d1 and d2 (d2 overwrites d1)
-    let deep_merge(d1, d2) = {
-        let keys = (
-            ..d1.keys(),
-            ..d2.keys(),
-        )
-        for k in keys {
-            if d1.keys().contains(k) and d2.keys().contains(k) {
-                let d1_val = d1.at(k)
-                let d2_val = d2.at(k)
-                if type(d1_val) == "dictionary" and type(d2_val) == "dictionary" {
-                    // both d1 and d2 contain key k
-                    // both d1.at(k) and d2.at(k) are dictionaries, merge them
-                    d2.insert(k, deep_merge(d1_val, d2_val))
-                } 
-            } else if d1.keys().contains(k) {
-                //  key only exists in d1, add it to d2
-                d2.insert(k, d1.at(k))
-            }
-        }
-        return d2
-    }
-
-    let result = none
-    for dict in dictionaries {
-        if result == none {
-            result = dict
-        } else {
-            result = deep_merge(result, dict)
-        }
-    }
-    return result
-}
-
 #let lttr_fmt(it) = {
     if type(it) == "array" {
         let ctr = 0
@@ -621,96 +578,82 @@
     signature: (:),
     body,
 ) = {
-    let as_content_dict = (it) => {
-        if type(it) != "dictionary" {
-            (content: it)
-        } else {
-            it
-        }
-    }
     let format_defaults = lttr_format_defaults.at(format)
 
+    // Takes an array of dictionaries and merges them where later dictionaries
+    // overwrite the values of the ones before
+    let lttr_deep_dict_merge(dictionaries) = {
+        if dictionaries.len() == 0 {
+            return (:)
+        } else if dictionaries.len() == 1 {
+            return dictionaries.first()
+        }
+
+        // helper function to deeply merge d1 and d2 (d2 overwrites d1)
+        let deep_merge(d1, d2) = {
+            let keys = (..d1.keys(), ..d2.keys())
+            for k in keys {
+                if d1.keys().contains(k) and d2.keys().contains(k) {
+                    let d1_val = d1.at(k)
+                    let d2_val = d2.at(k)
+                    if type(d1_val) == "dictionary" and type(d2_val) == "dictionary" {
+                        // both d1 and d2 contain key k both d1.at(k) and
+                        // d2.at(k) are dictionaries, merge them
+                        d2.insert(k, deep_merge(d1_val, d2_val))
+                    } 
+                } else if d1.keys().contains(k) {
+                    //  key only exists in d1, add it to d2
+                    d2.insert(k, d1.at(k))
+                }
+            }
+            return d2
+        }
+
+        let result = none
+        for dict in dictionaries {
+            if result == none {
+                result = dict
+            } else {
+                result = deep_merge(result, dict)
+            }
+        }
+        return result
+    }
+
+    let merge_arg_dicts = (item_name, item) => {
+        if item == none {
+            none
+        } else {
+            lttr_deep_dict_merge((
+                lttr_defaults.at(item_name, default: (:)),
+                format_defaults.at(item_name, default: (:)),
+                if type(item) != "dictionary" {
+                    (content: item)
+                } else {
+                    item
+                }
+            ))
+        }
+    }
+
     let data = (
+        _page: merge_arg_dicts("_page", _page),
+        _text: merge_arg_dicts("_text", _text),
+        author: author,
+        closing: merge_arg_dicts("closing", closing),
+        date_place: merge_arg_dicts("date_place", date_place),
         debug: debug,
         format: format,
-        _page: lttr_deep_dict_merge((
-            lttr_defaults._page,
-            format_defaults._page,
-            _page,
-        )),
-        _text: lttr_deep_dict_merge((
-            lttr_defaults._text,
-            format_defaults._text,
-            _text,
-        )),
-        settings: lttr_deep_dict_merge((
-            lttr_defaults.settings,
-            format_defaults.settings,
-            settings,
-        )),
-        sender: lttr_deep_dict_merge((
-            lttr_defaults.sender,
-            format_defaults.sender,
-            as_content_dict(sender),
-        )),
-        return_to: lttr_deep_dict_merge((
-            lttr_defaults.return_to,
-            format_defaults.return_to,
-            as_content_dict(return_to),
-        )),
-        remark_zone: lttr_deep_dict_merge((
-            lttr_defaults.remark_zone,
-            format_defaults.remark_zone,
-            as_content_dict(remark_zone),
-        )),
-        receiver: lttr_deep_dict_merge((
-            lttr_defaults.receiver,
-            format_defaults.receiver,
-            as_content_dict(receiver),
-        )),
-        date_place: if date_place == none { none } else {
-            lttr_deep_dict_merge((
-                lttr_defaults.date_place,
-                format_defaults.date_place,
-                as_content_dict(date_place),
-            ))
-        },
-        title: if title == none { none } else {
-            lttr_deep_dict_merge((
-                lttr_defaults.title,
-                as_content_dict(title),
-            ))
-        },
-        author: author,
-        horizontal_table: lttr_deep_dict_merge((
-            lttr_defaults.horizontal_table,
-            format_defaults.horizontal_table,
-            as_content_dict(horizontal_table),
-        )),
-        opening: if opening == none { none } else {
-            lttr_deep_dict_merge((
-                lttr_defaults.opening,
-                as_content_dict(opening),
-            ))
-        },
-        closing: if closing == none { none } else {
-            lttr_deep_dict_merge((
-                lttr_defaults.closing,
-                as_content_dict(closing),
-            ))
-        },
-        signature: if signature == none { none } else {
-            lttr_deep_dict_merge((
-                lttr_defaults.signature,
-                as_content_dict(signature),
-            ))
-        },
-        indicator_lines: if indicator_lines == none { none } else {
-            lttr_deep_dict_merge((
-                format_defaults.indicator_lines,
-                indicator_lines,
-            ))
-        },
+        horizontal_table: merge_arg_dicts("horizontal_table", horizontal_table),
+        indicator_lines: merge_arg_dicts("indicator_lines", indicator_lines),
+        opening: merge_arg_dicts("opening", opening),
+        receiver: merge_arg_dicts("receiver", receiver),
+        remark_zone: merge_arg_dicts("remark_zone", remark_zone),
+        return_to: merge_arg_dicts("return_to", return_to),
+        sender: merge_arg_dicts("sender", sender),
+        settings: merge_arg_dicts("settings", sender),
+        signature: merge_arg_dicts("signature", signature),
+        title: merge_arg_dicts("title", title),
     )
 
     // NOTE: This is a special case for DIN-5008-B as described in the format
