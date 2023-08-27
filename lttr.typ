@@ -565,7 +565,6 @@
     format: "DIN-5008-A",
     settings: (:),
     indicator_lines: (:),
-    author: (),
     sender: (:),
     return_to: (:),
     remark_zone: (:),
@@ -639,7 +638,6 @@
     let data = (
         _page: merge_arg_dicts("_page", _page),
         _text: merge_arg_dicts("_text", _text),
-        author: author,
         closing: merge_arg_dicts("closing", closing),
         date_place: merge_arg_dicts("date_place", date_place),
         debug: debug,
