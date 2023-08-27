@@ -51,17 +51,16 @@ directly or use a dict if other settings need to be changed also. For example:
 - `settings` [Dict, none]  
   Basic settings.
   - `content_spacing` [Length]  
-    Minimum spacing between sender/receiver and letter content.
+    Minimum spacing between sender/receiver and letter content (or the
+    horizontal table if present) and also the spacing after the horizontal
+    table.
   - `justify_content` [Bool]  
     Wheter or not to justify the content.
-  - `min_content_offset` [Length]  
-    Minimum space between top of the paper and beginning of the letter content.
 
   Example:
 
   ```typst
   settings: (
-    min_content_offset: 100mm,
     content_spacing: 8.46mm,
     justify_content: true,
   ),
@@ -181,8 +180,8 @@ directly or use a dict if other settings need to be changed also. For example:
     Array of of entries for the table.
   - `fmt` [Function]  
     Formatting function which takes an array of form `(title, content)`.
-  - `spacing` [Length]  
-    Spacing before the table.
+  - `spacing` [Lenght]
+    Spacing before the horizontal table.
 
   Example:
 

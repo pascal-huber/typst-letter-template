@@ -3,9 +3,9 @@
     debug: true,
     format: "C5-WINDOW-LEFT",
     title: "Brief schribä mit Typst isch zimli eifach",
-    opening: "Hoi Hans,",
+    opening: "Hoi Peter,",
     closing: "Uf widerluege",
-    signature: "Hansli",
+    signature: "Ruedi",
     date_place: (
         date: "20.04.2023",
         place: "Witfortistan",

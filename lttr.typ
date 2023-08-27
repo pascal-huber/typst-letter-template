@@ -4,7 +4,8 @@
 // NOTE: lttr_max_dy keeps track of the largest offset dy (from the top margin)
 //   of absolutely positioned content (sender and receiver fields) such that we
 //   know how much vertical offset we need to add at the beginning of the letter
-//   content
+//   content. Note that length does not include the value of
+//   `settings.content_spacing`.
 #let lttr_max_dy = state("lttr_max_dy", 0cm)
 #let lttr_update_max_dy(dy) = {
     locate(loc => {
@@ -12,7 +13,7 @@
     })
 }
 
-// takes an array of dictionaries and merges them where later dictionaries
+// Takes an array of dictionaries and merges them where later dictionaries
 // overwrite the values of the ones before
 #let lttr_deep_dict_merge(dictionaries) = {
     if dictionaries.len() == 0 {
@@ -84,9 +85,7 @@
         size: 11pt,
     ),
     settings: (
-        // NOTE: this is a DIN 5008 setting (but okay for all)
-        min_content_offset: 90mm,
-        content_spacing: 8.46mm, 
+        content_spacing: 10mm,
         justify_content: true,
     ),
     sender: (
@@ -133,7 +132,7 @@
             ]
             lttr_fmt(content)
         },
-        spacing: 8.46mm // NOTE: like DIN-5008-B spacing
+        spacing: 10mm,
     ),
     title: (
         content: none,
@@ -161,6 +160,12 @@
         _text: (
             lang: "DE"
         ),
+        settings: (
+            content_spacing: 8.46mm,
+        ),
+        horizontal_table: (
+            spacing: 8.46mm,
+        ),
         sender: (
             position: (left: 125mm, top: 32mm),
             width: 75mm,
@@ -180,7 +185,7 @@
             align: top,
         ),
         indicator_lines: (
-            show_puncher_mark: false,
+            show_puncher_mark: true,
             fold_marks: (87mm, 87mm+105mm),
         ),
         date_place: (
@@ -194,12 +199,18 @@
         _text: (
             lang: "DE"
         ),
+        settings: (
+            content_spacing: 8.46mm,
+        ),
+        horizontal_table: (
+            spacing: 8.46mm,
+        ),
         sender: (
             position: (left: 125mm, top: 50mm),
             width: 75mm,
         ),
         return_to: (
-            // NOTE: this position overlapps with remark_zone DIN-5008-B does
+            // NOTE: this position overlapps with remark_zone. DIN-5008-B does
             //   not have a dedicated return_to field. If both return_to and
             //   remark_zone have a non-none content, then the remark_zone field
             //   has to be recuced by return_to.dimensions.height
@@ -212,7 +223,6 @@
             align: bottom,
         ),
         receiver: (
-            // NOTE: I added the 5mm "padding" on the left here
             position: (left: 20mm + 5mm, top: 45mm + 17.7mm),
             dimensions: (height: 27.3mm, width: 85mm - 5mm),
             align: top,
@@ -232,6 +242,12 @@
         _text: (
             lang: "CH",
         ),
+        settings: (
+            content_spacing: 10mm,
+        ),
+        horizontal_table: (
+            spacing: 10mm,
+        ),
         sender: (
             // NOTE: position.top is the margin.top
             // NOTE: position.left and width are like DIN5008
@@ -248,14 +264,12 @@
             // NOTE: I added a 5mm "padding" on the left here
             position: (left: 20mm + 5mm, top: 52mm),
             // NOTE: height = Window_height - (C5_height - Paper_height)
-            //              = 45mm - (162mm - 148.5mm)
+            //              = 45mm - (162mm - 297mm/2)
             //              = 31.5mm
-            //              rounded down to 31mm
             // NOTE: width = Window_width - (C5_width - Paper_width)
             //              = 100mm - (229mm - 210mm)
             //              = 81mm
-            //              roundend down to 80mm
-            dimensions: (height: 31mm, width: 80mm),
+            dimensions: (height: 31.5mm, width: 81mm),
             align: horizon,
         ),
         indicator_lines: (
@@ -273,6 +287,12 @@
         _text: (
             lang: "CH",
         ),
+        settings: (
+            content_spacing: 10mm,
+        ),
+        horizontal_table: (
+            spacing: 10mm,
+        ),
         sender: (
             position: none,
             width: 75mm,
@@ -284,8 +304,8 @@
             position: none,
         ),
         receiver: (
-            position: (left: 120mm, top: 50mm),
-            dimensions: (height: 30mm, width: 80mm),
+            position: (left: 120mm, top: 52mm),
+            dimensions: (height: 31.5mm, width: 80mm),
             align: horizon,
         ),
         indicator_lines: (
@@ -465,6 +485,7 @@
             dx: dx,
             sender_rect
         )
+        // TODO: add layout here
         style(styles => {
             lttr_update_max_dy(measure(sender_rect, styles).height + dy)
         })
@@ -544,11 +565,10 @@
             dx: dx,
             receiver_rect,
         )
+        // TODO: add layout here
         style(styles => {
-            lttr_update_max_dy(
-                measure(receiver_rect, styles).height
-                 + dy
-                )
+            let rect_height =  measure(receiver_rect, styles).height
+            lttr_update_max_dy(rect_height + dy)
         })
     })
     body
@@ -626,6 +646,7 @@
         )),
         settings: lttr_deep_dict_merge((
             lttr_defaults.settings,
+            format_defaults.settings,
             settings,
         )),
         sender: lttr_deep_dict_merge((
@@ -664,6 +685,7 @@
         author: author,
         horizontal_table: lttr_deep_dict_merge((
             lttr_defaults.horizontal_table,
+            format_defaults.horizontal_table,
             as_content_dict(horizontal_table),
         )),
         opening: if opening == none { none } else {
@@ -710,12 +732,6 @@
     set page(..data._page)
     set text(..data._text)
     lttr_data.update(x => data)
-
-    style(styles => {
-        lttr_update_max_dy(
-            data.settings.min_content_offset - data._page.margin.top
-        )
-    })
     body
 }
 

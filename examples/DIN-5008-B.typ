@@ -5,7 +5,7 @@
     title: "Banana Order Confirmation",
     opening: "Dear Peter,",
     closing: "Peace, I'm out",
-    signature: "Hansli",
+    signature: "Hans",
     author: "Bananas Ltd.",
     horizontal_table: (
         // NOTE: we can override the default fmt to format the table entries

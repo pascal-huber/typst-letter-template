@@ -6,9 +6,9 @@
     settings: (
         min_content_spacing: 10cm,
     ),
-    opening: "Dear Sir, Madam or Mother,",
+    opening: "Dear Peter,",
     closing: "Peace, I'm out",
-    signature: "Hansli",
+    signature: "Hans",
     date_place: (
         date: "20.04.2023",
         place: "Weitfortistan",
