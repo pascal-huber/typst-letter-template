@@ -185,7 +185,7 @@
         ),
         indicator_lines: (
             show_puncher_mark: true,
-            fold_marks: (87mm, 87mm+105mm),
+            fold_marks: (105mm, 105mm + 105mm),
         ),
         date_place: (
             align: right,
@@ -509,8 +509,8 @@
             inset: (left: 0mm, right: 0mm, top: 0mm),
             outset: 0pt,
             {
-                set align(state.receiver.align)
                 v(state.receiver.spacing)
+                set align(state.receiver.align)
                 state.receiver.at("fmt")(state.receiver)
             },
         )
