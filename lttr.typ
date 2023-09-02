@@ -339,6 +339,7 @@
                 let table_rect = rect(
                     outset: 0pt,
                     inset: 0pt,
+                    stroke: none,
                     tbl
                 )
                 let dy = lttr_max_dy.at(loc) + state.horizontal_table.spacing
