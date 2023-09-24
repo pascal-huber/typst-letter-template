@@ -14,7 +14,7 @@
 }
 
 #let lttr_fmt(it) = {
-    if type(it) == "array" {
+    if type(it) == array {
         let ctr = 0
         for line in it {
             lttr_fmt(line)
@@ -288,7 +288,7 @@
                     )
                 )
             }
-            if type(state.indicator_lines.fold_marks) == "array" {
+            if type(state.indicator_lines.fold_marks) == array {
                 for mark in state.indicator_lines.fold_marks {
                     place(
                         dy: mark - state._page.margin.top,
@@ -596,7 +596,7 @@
                 if d1.keys().contains(k) and d2.keys().contains(k) {
                     let d1_val = d1.at(k)
                     let d2_val = d2.at(k)
-                    if type(d1_val) == "dictionary" and type(d2_val) == "dictionary" {
+                    if type(d1_val) == dictionary and type(d2_val) == dictionary {
                         // both d1 and d2 contain key k both d1.at(k) and
                         // d2.at(k) are dictionaries, merge them
                         d2.insert(k, deep_merge(d1_val, d2_val))
@@ -627,7 +627,7 @@
             lttr_deep_dict_merge((
                 lttr_defaults.at(item_name, default: (:)),
                 format_defaults.at(item_name, default: (:)),
-                if type(item) != "dictionary" {
+                if type(item) != dictionary {
                     (content: item)
                 } else {
                     item
