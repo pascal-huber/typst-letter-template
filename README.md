@@ -10,21 +10,21 @@ See the [examples](./examples)
 
 ## Templates
 
-- `lttr_init` is responsible to compute all values from the parameters and
+- `lttr-init` is responsible to compute all values from the parameters and
   default values for different formats. It also sets the `page` and `text`
   attributes.
 
-- `lttr_preamble` renders:
-  - `lttr_sender`
-  - `lttr_receiver`
-  - `lttr_indicator_lines`
-  - `lttr_content_offset`
-  - `lttr_horizontal_table`
-  - `lttr_date_place`
-  - `lttr_title`
-  - `lttr_opening`
+- `lttr-preamble` renders:
+  - `lttr-sender`
+  - `lttr-receiver`
+  - `lttr-indicator-lines`
+  - `lttr-content-offset`
+  - `lttr-horizontal-table`
+  - `lttr-date-place`
+  - `lttr-title`
+  - `lttr-opening`
 
-- `lttr_closing` renders the closing line and the signature.
+- `lttr-closing` renders the closing line and the signature.
 
 ## Parameters
 
@@ -50,35 +50,35 @@ directly or use a dict if other settings need to be changed also. For example:
 
 - `settings` (`[Dict]`)
   Basic settings.
-  - `content_spacing` (`[Length]`)  
+  - `content-spacing` (`[Length]`)  
     Minimum spacing between sender/receiver and letter content (or the
     horizontal table if present) and also the spacing after the horizontal
     table.
-  - `justify_content` (`[Bool]`)  
+  - `justify-content` (`[Bool]`)  
     Wheter or not to justify the content.
 
   Example:
 
   ```typst
   settings: (
-    content_spacing: 8.46mm,
-    justify_content: true,
+    content-spacing: 8.46mm,
+    justify-content: true,
   ),
   ```
 
-- `indicator_lines` (`[Dict]`)  
+- `indicator-lines` (`[Dict]`)  
   Info to render lines for the hole puncher and folding ([see below](#indicator-lines)).
-  - `fold_marks` (`[Array]`)  
+  - `fold-marks` (`[Array]`)  
      Lenghts (`[Length]`) from top of page of the fold marks
-  - `show_puncher_mark` (`[Bool]`)  
+  - `show-puncher-mark` (`[Bool]`)  
      Whether or not to show the puncher mark.
 
   Example:
 
   ```typst
-  indicator_lines: (
-    fold_marks: (87mm, 87mm+105mm),
-    show_puncher_mark: true,
+  indicator-lines: (
+    fold-marks: (87mm, 87mm+105mm),
+    show-puncher-mark: true,
   )
   ```
 
@@ -113,40 +113,40 @@ directly or use a dict if other settings need to be changed also. For example:
   ),
   ```
 
-- `return_to` (`[Array, Content, Dict, String]`)  
+- `return-to` (`[Array, Content, Dict, String]`)  
    The returning address.
   - `content` (`[Array, Content]`)  
-    Content of the return_to field.
+    Content of the return-to field.
   - `dimensions` (`[Dict]`)  
-    Dimensions of the return_to field (`width: [Length]`, `height: [Length]`)
+    Dimensions of the return-to field (`width: [Length]`, `height: [Length]`)
   - `fmt` (`[Function]`)  
-    Rendering function which takes the return_to (`[Dict]`) to format and show
+    Rendering function which takes the return-to (`[Dict]`) to format and show
     it.
   - `position` (`[Dict]`)  
-    Position of the return_to field (`top: [Length]`, `left: [Length]`)
+    Position of the return-to field (`top: [Length]`, `left: [Length]`)
 
   Example:
 
   ```typst
-  return_to: "Some Address, I don't care...",
+  return-to: "Some Address, I don't care...",
   ```
 
-- `remark_zone` (`[Array, Content, Dict, String]`)  
+- `remark-zone` (`[Array, Content, Dict, String]`)  
    The remark zone.
   - `align` (`[Align]`)  
-    Alignment of the remark_zone.
+    Alignment of the remark-zone.
   - `content` (`[Array, Content, String]`)  
-    Content of the remark_zone field.
+    Content of the remark-zone field.
   - `dimensions` (`[Dict]`)  
-    Dimensions of the remark_zone field (`width: [Length]`, `height: [Length]`)
+    Dimensions of the remark-zone field (`width: [Length]`, `height: [Length]`)
   - `fmt` (`[Function]`)  
-    Rendering function which takes the remark_zone (`[Dict]`) to format and show
+    Rendering function which takes the remark-zone (`[Dict]`) to format and show
     it.
   - `position` (`[Dict]`)  
-    Position of the remark_zone field (`top: [Length]`, `left: [Length]`) 
+    Position of the remark-zone field (`top: [Length]`, `left: [Length]`) 
 
   ```typst
-  remark_zone: (
+  remark-zone: (
     "This is a",
     "multiline remark",
   )
@@ -177,7 +177,7 @@ directly or use a dict if other settings need to be changed also. For example:
   ),
   ```
 
-- `horizontal_table` (`[Dict, Array]`)  
+- `horizontal-table` (`[Dict, Array]`)  
   A table to add before the date, time and title.
   - `content` (`[Array]`)  
     Array of of entries for the table where each entry is itself an array of
@@ -191,7 +191,7 @@ directly or use a dict if other settings need to be changed also. For example:
   Example:
 
   ```typst
-  horizontal_table: (
+  horizontal-table: (
     ("Ihr Zeichen", "Bananalover149"),
     ("Ihre Nachricht vom", "12.12.2022"),
     ("Unser Zeichen", "Bananenfabrik"),
@@ -217,8 +217,8 @@ directly or use a dict if other settings need to be changed also. For example:
   )
   ```
 
-- `date_place` (`[Content, Dict, String]`)  
-  Info to render the `date_place` template ([see below](#date-place)).
+- `date-place` (`[Content, Dict, String]`)  
+  Info to render the `date-place` template ([see below](#date-place)).
   - `align` (`[Align]`)  
     Alignment of the place and date
   - `date` (`[Content, String]`)  
@@ -229,7 +229,7 @@ directly or use a dict if other settings need to be changed also. For example:
   Example:
 
   ```typst
-  date_place: (
+  date-place: (
     align: left,
     date: "20.04.2023",
     place: "Weitfortistan",
@@ -286,7 +286,7 @@ directly or use a dict if other settings need to be changed also. For example:
 
 ## Other functions
 
-- `lttr_state` prints the entire state used to render the components. This can
+- `lttr-state` prints the entire state used to render the components. This can
   be useful for debugging purposes.
 
 ## Resources

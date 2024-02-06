@@ -1,12 +1,12 @@
 #import "@local/lttr:0.1.0": *
-#show : lttr_init.with(
+#show : lttr-init.with(
     debug: true,
     format: "DIN-5008-B",
     title: "Banana Order Confirmation",
     opening: "Dear Peter,",
     closing: "Peace, I'm out",
     signature: "Hans",
-    horizontal_table: (
+    horizontal-table: (
         // NOTE: we can override the default fmt to format the table entries
         fmt: (header, content) => [
             #text(fill: green, size: 0.8em)[
@@ -22,11 +22,11 @@
             ("Datum", "06.08.2023")
         )
     ),
-    date_place: (
+    date-place: (
         date: "20.04.2023",
         place: "Monkey City",
     ),
-    return_to: "Bananas Ltd · Fruitstreet 15 · 1234 Monkey City",
+    return-to: "Bananas Ltd · Fruitstreet 15 · 1234 Monkey City",
     receiver: (
         "Peter Bananaeater",
         "Bahnhofsstrasse 16",
@@ -46,8 +46,8 @@
         ]
     ),
 )
-#show: lttr_preamble
+#show: lttr-preamble
 
 #lorem(100)
 
-#show: lttr_closing
+#show: lttr-closing

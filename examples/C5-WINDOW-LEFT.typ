@@ -1,12 +1,12 @@
 #import "@local/lttr:0.1.0": *
-#show: lttr_init.with(
+#show: lttr-init.with(
     debug: true,
     format: "C5-WINDOW-LEFT",
     title: "Brief schribä mit Typst isch zimli eifach",
     opening: "Hoi Peter,",
     closing: "Uf widerluege",
     signature: "Ruedi",
-    date_place: (
+    date-place: (
         date: "20.04.2023",
         place: "Witfortistan",
     ),
@@ -22,8 +22,8 @@
     ]),
 )
 
-#show: lttr_preamble
+#show: lttr-preamble
 
 #lorem(50)
 
-#show: lttr_closing
+#show: lttr-closing
