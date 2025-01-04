@@ -273,184 +273,184 @@
 )
 
 #let lttr-indicator-lines(body) = context {
-        let state = lttr-data.at(here());
-        if state.indicator-lines != none {
-            if state.indicator-lines.show-puncher-mark {
+    let state = lttr-data.at(here());
+    if state.indicator-lines != none {
+        if state.indicator-lines.show-puncher-mark {
+            place(
+                dy: 50% - 0.5 * state._page.margin.top + 0.5 * state._page.margin.bottom,
+                dx: 0cm - state._page.margin.left + 9mm,
+                line(
+                    length: 0.4cm, 
+                    stroke: 0.5pt + rgb("#777777")
+                )
+            )
+        }
+        if type(state.indicator-lines.fold-marks) == array {
+            for mark in state.indicator-lines.fold-marks {
                 place(
-                    dy: 50% - 0.5 * state._page.margin.top + 0.5 * state._page.margin.bottom,
+                    dy: mark - state._page.margin.top,
                     dx: 0cm - state._page.margin.left + 9mm,
                     line(
-                        length: 0.4cm, 
+                        length: 0.2cm, 
                         stroke: 0.5pt + rgb("#777777")
                     )
                 )
             }
-            if type(state.indicator-lines.fold-marks) == array {
-                for mark in state.indicator-lines.fold-marks {
-                    place(
-                        dy: mark - state._page.margin.top,
-                        dx: 0cm - state._page.margin.left + 9mm,
-                        line(
-                            length: 0.2cm, 
-                            stroke: 0.5pt + rgb("#777777")
-                        )
-                    )
-                }
-            }
         }
+    }
     body
 }
 
 #let lttr-horizontal-table(
     body
 ) = context {
-        let state = lttr-data.at(here());
-        if state.horizontal-table.content != none {
-            let content = ()
-            let ctr = 0
-            for entry in state.horizontal-table.content {
-                ctr += 1
-                content.push({
-                    state.horizontal-table.at("fmt")(
-                        entry.first(),
-                        entry.last(),
-                    )
-                })
-            }
-            if ctr > 0 {
-                let column-width = 100% / ctr
-                let columns = ()
-                while ctr > 0 {
-                    columns.push(column-width)
-                    ctr -= 1
-                }
-                let tbl = table(
-                    columns: columns,
-                    inset: 0pt,
-                    stroke: if state.debug {red} else {none},
-                    align: (left, top),
-                    ..content
+    let state = lttr-data.at(here());
+    if state.horizontal-table.content != none {
+        let content = ()
+        let ctr = 0
+        for entry in state.horizontal-table.content {
+            ctr += 1
+            content.push({
+                state.horizontal-table.at("fmt")(
+                    entry.first(),
+                    entry.last(),
                 )
-                let table-rect = rect(
-                    outset: 0pt,
-                    inset: 0pt,
-                    stroke: none,
-                    tbl
-                )
-                let dy = lttr-max-dy.at(here()) + state.horizontal-table.spacing
-                place(
-                    dy: dy,
-                    {
-                        table-rect
-                        layout(size => {
-                            let (height,) = measure(
-                                block(width: size.width, table-rect)
-                            )
-                            lttr-update-max-dy(height + dy)
-                        })
-                    }
-                )
-            }
+            })
         }
+        if ctr > 0 {
+            let column-width = 100% / ctr
+            let columns = ()
+            while ctr > 0 {
+                columns.push(column-width)
+                ctr -= 1
+            }
+            let tbl = table(
+                columns: columns,
+                inset: 0pt,
+                stroke: if state.debug {red} else {none},
+                align: (left, top),
+                ..content
+            )
+            let table-rect = rect(
+                outset: 0pt,
+                inset: 0pt,
+                stroke: none,
+                tbl
+            )
+            let dy = lttr-max-dy.at(here()) + state.horizontal-table.spacing
+            place(
+                dy: dy,
+                {
+                    table-rect
+                    layout(size => {
+                        let (height,) = measure(
+                            block(width: size.width, table-rect)
+                        )
+                        lttr-update-max-dy(height + dy)
+                    })
+                }
+            )
+        }
+    }
     body
 }
 
 #let lttr-closing(body) = context {
-        let state = lttr-data.at(here());
-        if  state.closing.content != none {
-            v(state.closing.spacing)
-            state.closing.content
-        }
-        if state.signature.content != none {
-            v(state.signature.spacing)
-            state.signature.content
-        }
+    let state = lttr-data.at(here());
+    if  state.closing.content != none {
+        v(state.closing.spacing)
+        state.closing.content
+    }
+    if state.signature.content != none {
+        v(state.signature.spacing)
+        state.signature.content
+    }
     body
 }
 
 #let lttr-opening(body) = context {
-        let state = lttr-data.at(here());
-        if state.opening != none {
-            v(state.opening.spacing)
-            state.opening.content
-        }
+    let state = lttr-data.at(here());
+    if state.opening != none {
+        v(state.opening.spacing)
+        state.opening.content
+    }
     body
 }
 
 #let lttr-date-place(body) = context {
-        let state = lttr-data.at(here());
-        if state.date-place != none {
-            set align(state.date-place.align)
-            state.date-place.place
-            if state.date-place.place != none and state.date-place.date != none {
-                text(", ")
-            }
-            state.date-place.date
+    let state = lttr-data.at(here());
+    if state.date-place != none {
+        set align(state.date-place.align)
+        state.date-place.place
+        if state.date-place.place != none and state.date-place.date != none {
+            text(", ")
         }
+        state.date-place.date
+    }
     body
 }
 
 #let lttr-title(body) = context {
-        let state = lttr-data.at(here());
-        if state.title != none {
-            v(state.title.spacing)
-            text(
-                weight: "bold",
-                size: 1.0em,
-                state.title.content
-            )
-        }
+    let state = lttr-data.at(here());
+    if state.title != none {
+        v(state.title.spacing)
+        text(
+            weight: "bold",
+            size: 1.0em,
+            state.title.content
+        )
+    }
     body
 }
 
 #let lttr-sender(body) = context {
-        let state = lttr-data.at(here());
-        let sender-rect = rect(
-            width: state.sender.width,
-            inset: 0pt,
-            outset: 0pt,
-            stroke: if state.debug {blue} else {none},
-            {
-                state.sender.at("fmt")(state.sender)
-            }
-        )
-        let sender-position = if state.sender.position != none {
-            state.sender.position
-        } else {
-            (left: state._page.margin.left, top: state._page.margin.top) 
+    let state = lttr-data.at(here());
+    let sender-rect = rect(
+        width: state.sender.width,
+        inset: 0pt,
+        outset: 0pt,
+        stroke: if state.debug {blue} else {none},
+        {
+            state.sender.at("fmt")(state.sender)
         }
-        let dy = sender-position.top - state._page.margin.top
-        let dx = sender-position.left - state._page.margin.left
-        place(
-            dy: dy,
-            dx: dx,
-            sender-rect
-        )
-        // TODO: add layout here
-        lttr-update-max-dy(measure(sender-rect).height + dy)
+    )
+    let sender-position = if state.sender.position != none {
+        state.sender.position
+    } else {
+        (left: state._page.margin.left, top: state._page.margin.top) 
+    }
+    let dy = sender-position.top - state._page.margin.top
+    let dx = sender-position.left - state._page.margin.left
+    place(
+        dy: dy,
+        dx: dx,
+        sender-rect
+    )
+    // TODO: add layout here
+    lttr-update-max-dy(measure(sender-rect).height + dy)
     body
 }
 
 #let lttr-receiver-return-to(body) = context {
-        let state = lttr-data.at(here());
-        if state.return-to.position != none {
-            let dy = state.return-to.position.top - state._page.margin.top
-            let dx = state.return-to.position.left - state._page.margin.left
-            place(
-                dy: dy,
-                dx: dx,
-                rect(
-                    width: state.return-to.dimensions.width,
-                    height: 5mm, 
-                    stroke: if state.debug {red} else {none},
-                    inset: (left: 0mm, right: 0mm),
-                    outset: 0cm,
-                    {
-                        state.return-to.at("fmt")(state.return-to)
-                    }
-                )
+    let state = lttr-data.at(here());
+    if state.return-to.position != none {
+        let dy = state.return-to.position.top - state._page.margin.top
+        let dx = state.return-to.position.left - state._page.margin.left
+        place(
+            dy: dy,
+            dx: dx,
+            rect(
+                width: state.return-to.dimensions.width,
+                height: 5mm, 
+                stroke: if state.debug {red} else {none},
+                inset: (left: 0mm, right: 0mm),
+                outset: 0cm,
+                {
+                    state.return-to.at("fmt")(state.return-to)
+                }
             )
-        }
+        )
+    }
     body
 }
 
@@ -514,10 +514,10 @@
 }
 
 #let lttr-content-offset(body) = context {
-        let state = lttr-data.at(here());
-        v(lttr-max-dy.at(here()) + state.settings.content-spacing)
-        set par(justify: state.settings.justify-content)
-        body
+    let state = lttr-data.at(here());
+    v(lttr-max-dy.at(here()) + state.settings.content-spacing)
+    set par(justify: state.settings.justify-content)
+    body
 }
 
 #let lttr-preamble(body) = {
