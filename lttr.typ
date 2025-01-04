@@ -7,10 +7,8 @@
 //   content. Note that length does not include the value of
 //   `settings.content-spacing`.
 #let lttr-max-dy = state("lttr-max-dy", 0cm)
-#let lttr-update-max-dy(dy) = {
-    locate(loc => {
-        lttr-max-dy.update(x => calc.max(x, dy))
-    })
+#let lttr-update-max-dy(dy) = context {
+    lttr-max-dy.update(x => calc.max(x, dy))
 }
 
 #let lttr-fmt(it) = {
@@ -274,9 +272,8 @@
     ),
 )
 
-#let lttr-indicator-lines(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-indicator-lines(body) = context {
+        let state = lttr-data.at(here());
         if state.indicator-lines != none {
             if state.indicator-lines.show-puncher-mark {
                 place(
@@ -301,15 +298,13 @@
                 }
             }
         }
-    })
     body
 }
 
 #let lttr-horizontal-table(
     body
-) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+) = context {
+        let state = lttr-data.at(here());
         if state.horizontal-table.content != none {
             let content = ()
             let ctr = 0
@@ -342,29 +337,26 @@
                     stroke: none,
                     tbl
                 )
-                let dy = lttr-max-dy.at(loc) + state.horizontal-table.spacing
+                let dy = lttr-max-dy.at(here()) + state.horizontal-table.spacing
                 place(
                     dy: dy,
                     {
                         table-rect
-                        layout(size => style(styles => {
+                        layout(size => {
                             let (height,) = measure(
-                                block(width: size.width, table-rect),
-                                styles
+                                block(width: size.width, table-rect)
                             )
                             lttr-update-max-dy(height + dy)
-                        }))
+                        })
                     }
                 )
             }
         }
-    })
     body
 }
 
-#let lttr-closing(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-closing(body) = context {
+        let state = lttr-data.at(here());
         if  state.closing.content != none {
             v(state.closing.spacing)
             state.closing.content
@@ -373,24 +365,20 @@
             v(state.signature.spacing)
             state.signature.content
         }
-    })
     body
 }
 
-#let lttr-opening(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-opening(body) = context {
+        let state = lttr-data.at(here());
         if state.opening != none {
             v(state.opening.spacing)
             state.opening.content
         }
-    })
     body
 }
 
-#let lttr-date-place(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-date-place(body) = context {
+        let state = lttr-data.at(here());
         if state.date-place != none {
             set align(state.date-place.align)
             state.date-place.place
@@ -399,13 +387,11 @@
             }
             state.date-place.date
         }
-    })
     body
 }
 
-#let lttr-title(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-title(body) = context {
+        let state = lttr-data.at(here());
         if state.title != none {
             v(state.title.spacing)
             text(
@@ -414,13 +400,11 @@
                 state.title.content
             )
         }
-    })
     body
 }
 
-#let lttr-sender(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-sender(body) = context {
+        let state = lttr-data.at(here());
         let sender-rect = rect(
             width: state.sender.width,
             inset: 0pt,
@@ -443,16 +427,12 @@
             sender-rect
         )
         // TODO: add layout here
-        style(styles => {
-            lttr-update-max-dy(measure(sender-rect, styles).height + dy)
-        })
-    })
+        lttr-update-max-dy(measure(sender-rect).height + dy)
     body
 }
 
-#let lttr-receiver-return-to(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-receiver-return-to(body) = context {
+        let state = lttr-data.at(here());
         if state.return-to.position != none {
             let dy = state.return-to.position.top - state._page.margin.top
             let dx = state.return-to.position.left - state._page.margin.left
@@ -471,13 +451,11 @@
                 )
             )
         }
-    })
     body
 }
 
-#let lttr-receiver-remark-zone(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+#let lttr-receiver-remark-zone(body) = context {
+    let state = lttr-data.at(here());
         if state.remark-zone.position != none {
             let dy = state.remark-zone.position.top - state._page.margin.top
             let dx = state.remark-zone.position.left - state._page.margin.left
@@ -496,13 +474,12 @@
                 )
             )
         }
-    })
     body
 }
 
 #let lttr-receiver-address(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
+    context {
+        let state = lttr-data.at(here());
         let receiver-rect = rect(
             width: state.receiver.dimensions.width,
             height: state.receiver.dimensions.height,
@@ -523,11 +500,9 @@
             receiver-rect,
         )
         // TODO: add layout here
-        style(styles => {
-            let rect-height =  measure(receiver-rect, styles).height
-            lttr-update-max-dy(rect-height + dy)
-        })
-    })
+        let rect-height =  measure(receiver-rect).height
+        lttr-update-max-dy(rect-height + dy)
+    }
     body
 }
 
@@ -538,13 +513,11 @@
     body
 }
 
-#let lttr-content-offset(body) = {
-    locate(loc => {
-        let state = lttr-data.at(loc);
-        v(lttr-max-dy.at(loc) + state.settings.content-spacing)
+#let lttr-content-offset(body) = context {
+        let state = lttr-data.at(here());
+        v(lttr-max-dy.at(here()) + state.settings.content-spacing)
         set par(justify: state.settings.justify-content)
         body
-    })
 }
 
 #let lttr-preamble(body) = {
@@ -676,8 +649,6 @@
     body
 }
 
-#let lttr-state() = {
-    locate(loc => {
-        lttr-data.at(loc);
-    })
+#let lttr-state() = context {
+    lttr-data.at(here());
 }
