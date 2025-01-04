@@ -307,11 +307,11 @@ directly or use a dict if other settings need to be changed also. For example:
 ## Development Setup
 
 Currently, I just create a symlink such that I can import it with `#import
-"@local/lttr:0.1.0": *` as follows.
+"@local/lttr:1.0.0": *` as follows.
 
 ```bash
 mkdir -p ${XDG_DATA_HOME}/typst/packages/local/lttr/
-ln -s /path/to/this/repo ${XDG_DATA_HOME}/typst/packages/local/lttr/0.1.0
+ln -s /path/to/this/repo ${XDG_DATA_HOME}/typst/packages/local/lttr/1.0.0
 ```
 
 ## Installation

@@ -1,4 +1,4 @@
-#import "@local/lttr:0.1.0": *
+#import "@local/lttr:1.0.0": *
 #show: lttr-init.with(
     debug: true,
     format: "DIN-5008-A",
